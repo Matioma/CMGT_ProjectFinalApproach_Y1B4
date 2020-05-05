@@ -1,0 +1,18 @@
+D:\Documents\StudyDocs\Block1.3\GXPEngineShare\GXPEngine\bin\Debug\GXPEngine.exe
+D:\Documents\StudyDocs\Block1.3\GXPEngineShare\GXPEngine\bin\Debug\GXPEngine.pdb
+D:\Documents\StudyDocs\Block1.3\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.csprojAssemblyReference.cache
+D:\Documents\StudyDocs\Block1.3\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
+D:\Documents\StudyDocs\Block1.3\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.exe
+D:\Documents\StudyDocs\Block1.3\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+D:\Documents\StudyDocs\Block1.3\Project Lift off\GXPEngineShare\GXPEngine\bin\Debug\GXPEngine.exe
+D:\Documents\StudyDocs\Block1.3\Project Lift off\GXPEngineShare\GXPEngine\bin\Debug\GXPEngine.pdb
+D:\Documents\StudyDocs\Block1.3\Project Lift off\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.csprojAssemblyReference.cache
+D:\Documents\StudyDocs\Block1.3\Project Lift off\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
+D:\Documents\StudyDocs\Block1.3\Project Lift off\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.exe
+D:\Documents\StudyDocs\Block1.3\Project Lift off\GXPEngineShare\GXPEngine\obj\x86\Debug\GXPEngine.pdb
+D:\Documents\StudyDocs\Block1.4\CMGT_ProjectFinalApproach_Y1B4\GXPEngine\bin\Debug\GXPEngine.exe
+D:\Documents\StudyDocs\Block1.4\CMGT_ProjectFinalApproach_Y1B4\GXPEngine\bin\Debug\GXPEngine.pdb
+D:\Documents\StudyDocs\Block1.4\CMGT_ProjectFinalApproach_Y1B4\GXPEngine\obj\x86\Debug\GXPEngine.csprojAssemblyReference.cache
+D:\Documents\StudyDocs\Block1.4\CMGT_ProjectFinalApproach_Y1B4\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
+D:\Documents\StudyDocs\Block1.4\CMGT_ProjectFinalApproach_Y1B4\GXPEngine\obj\x86\Debug\GXPEngine.exe
+D:\Documents\StudyDocs\Block1.4\CMGT_ProjectFinalApproach_Y1B4\GXPEngine\obj\x86\Debug\GXPEngine.pdb
