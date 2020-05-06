@@ -28,8 +28,8 @@ public class Controller:GameObject
         {
             if (child is IInteractable)
             {
-                bool objIsHovered = mouseOverButton(child as Button);
-                var button = child as Button;
+                bool objIsHovered = mouseOverButton(child as HUDElement);
+                var button = child as HUDElement;
                 button.IsHovered = objIsHovered;
 
 
@@ -54,7 +54,7 @@ public class Controller:GameObject
 
 
     //Check if a mouse is over a button
-    bool mouseOverButton(Button button) {
+    bool mouseOverButton(HUDElement button) {
         int width = button.width;
         int height = button.height;
         int xMin = (int)button.x - width / 2;

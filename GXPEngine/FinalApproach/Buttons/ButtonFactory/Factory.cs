@@ -7,6 +7,6 @@ using GXPEngine;
 
 abstract class Factory
 {
-    public abstract Button FactoryMethod();
+    public abstract HUDElement FactoryMethod();
 }
 

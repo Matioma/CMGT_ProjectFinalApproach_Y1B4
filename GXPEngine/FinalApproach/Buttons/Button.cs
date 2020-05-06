@@ -2,46 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Schema;
+
 using GXPEngine;
-using TiledMapParser;
 
-abstract class Button : AnimationSprite,IInteractable
+
+
+
+class Button : HUDElement
 {
-    bool _isHovered = false;
-    public bool IsHovered {
-        get { return _isHovered; }
-        set { 
-            //Check if state changeds
-            if (value != _isHovered) {
-                _isHovered = value;
-                if (_isHovered)
-                {
-                    OnHover();
-                }
-                else {
-                    OnHoverEnd();
-                }
-            } 
-        }
+
+    public Button(string path, int cols, int rows) : base(path, cols, rows)
+    {
     }
 
-
-    ///
-    public string ButtonTarget{ set; get; }="MainMenu";
-
-
-
-    public Button(string path, int cols, int rows) : base(path, cols, rows) {
-        SetOrigin(width / 2, height / 2);
-
-        var textObject = new Text("Test", (int)x - width / 2, (int)y - height / 2, width, height, 0);
-        AddChild(textObject);
+    public override void OnClick() {
+        //TO DO
     }
-    public abstract void OnClick();
-    public abstract void OnHover();
-    public abstract void OnHoverEnd();
-    public abstract void OnClickRelease();
-    public abstract void OnClickPressed();
+    public override void OnHover() {
+        SetFrame(1);
+    }
+    public override void OnHoverEnd() {
+        SetFrame(0);
+    }
+    public override void OnClickRelease()
+    {
+        SceneManager.Instance.OpenScene(ButtonTarget);
+    }
+    public override void OnClickPressed()
+    {
+        //TO DO
+    }
 }
 
