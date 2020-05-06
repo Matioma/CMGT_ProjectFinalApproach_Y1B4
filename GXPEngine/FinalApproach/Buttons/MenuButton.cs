@@ -22,5 +22,13 @@ class MenuButton:Button
         SetFrame(0);
         Console.WriteLine("Hover ended");
     }
+    public override void OnClickRelease()
+    {
+        Console.WriteLine("OnClickRelease");
+    }
+    public override void OnClickPressed()
+    {
+        Console.WriteLine("OnClickPressed");
+    }
 }
 

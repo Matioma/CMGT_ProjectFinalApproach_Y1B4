@@ -14,7 +14,7 @@ public class Controller:GameObject
         
     public Controller()
     {
-        cursor = new Cursor(60,60);
+        cursor = new Cursor(60,60,0);
         AddChild(cursor);
     }
 
@@ -28,7 +28,7 @@ public class Controller:GameObject
     {
         foreach (var child in parent.GetChildren())
         {
-            if (child is IButton)
+            if (child is IInteractable)
             {
                 bool objIsHovered = mouseOverButton(child as Button);
                 var button = child as Button;
@@ -37,9 +37,17 @@ public class Controller:GameObject
 
                 if (objIsHovered)
                 {
-                    if (Input.GetMouseButton(0))
+                    if (Input.GetMouseButtonDown(0))
                     {
                         button.OnClick();
+                    }
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        button.OnClickRelease();
+                    }
+                    if (Input.GetMouseButton(0))
+                    {
+                        button.OnClickPressed();
                     }
                 }
             }

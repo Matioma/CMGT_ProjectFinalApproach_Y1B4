@@ -6,7 +6,7 @@ using System.Xml.Schema;
 using GXPEngine;
 using TiledMapParser;
 
-abstract class Button : AnimationSprite,IButton
+abstract class Button : AnimationSprite,IInteractable
 {
     bool _isHovered=false;
 
@@ -32,7 +32,6 @@ abstract class Button : AnimationSprite,IButton
     public Button(string path, int cols, int rows) : base(path, cols, rows) {
         SetOrigin(width / 2, height / 2);
 
-        Console.WriteLine("Button height:" + height);
         var textObject = new Text("Test", (int)x - width / 2, (int)y - height / 2, width, height, 0);
         AddChild(textObject);
         
@@ -57,7 +56,12 @@ abstract class Button : AnimationSprite,IButton
         throw new NotImplementedException();
     }
 
-    public void OnClickRelease()
+    public virtual void OnClickRelease()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void OnClickPressed()
     {
         throw new NotImplementedException();
     }
