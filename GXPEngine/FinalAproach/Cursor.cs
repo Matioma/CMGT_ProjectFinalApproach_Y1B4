@@ -15,4 +15,8 @@ class Cursor:AnimationSprite
         this.height = height;
     }
 
+
+    public void followMouse() {
+        SetXY(Input.mouseX,Input.mouseY);
+    }
 }
