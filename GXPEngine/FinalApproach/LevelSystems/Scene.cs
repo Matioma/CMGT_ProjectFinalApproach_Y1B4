@@ -19,7 +19,10 @@ public class Scene:GameObject
             case 1:
                 BuildLevel1();
                 break;
-        
+            case 2:
+                BuildLevel2();
+                break;
+
         }
     }
 
@@ -31,6 +34,7 @@ public class Scene:GameObject
 
 
         button = new Button("art/Button.jpg", 2, 1);
+        button.ButtonTarget = "Level2";
         button.SetXY(250, 320);
         AddChild(button);
 
@@ -52,10 +56,22 @@ public class Scene:GameObject
 
 
         var button = new Button("art/Button.jpg", 2, 1);
-        button.ButtonTarget = "Level1";
         button.SetXY(250, 120);
         AddChild(button);
     }
 
+
+    void BuildLevel2()
+    {
+        var backgroundsample = new AnimationSprite("art/backgroundsample.jpg", 1, 1);
+        backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
+        backgroundsample.SetXY(game.width / 2, game.height / 2);
+        AddChild(backgroundsample);
+
+
+        var button = new Button("art/Button.jpg", 2, 1);
+        button.SetXY(250, 120);
+        AddChild(button);
+    }
 }
 

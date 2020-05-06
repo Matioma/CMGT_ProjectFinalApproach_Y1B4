@@ -74,11 +74,13 @@ public class SceneManager : GameObject
     }
     
     void LoadLevel() {
-        levels.Add("MainMenu",new Scene(0));
-        levels.Add("Level1", new Scene(1));
-
         scenes.Add(new Scene(0));
         scenes.Add(new Scene(1));
+        scenes.Add(new Scene(2));
+
+        levels.Add("MainMenu",scenes[0]);
+        levels.Add("Level1", scenes[1]);
+        levels.Add("Level2", scenes[2]);
     }
 
 

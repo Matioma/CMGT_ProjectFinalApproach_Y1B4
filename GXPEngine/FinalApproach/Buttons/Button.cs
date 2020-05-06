@@ -13,6 +13,8 @@ class Button : HUDElement
 
     public Button(string path, int cols, int rows) : base(path, cols, rows)
     {
+        var textObject = new Text("Test", (int)x - width / 2, (int)y - height / 2, width, height, 0);
+        AddChild(textObject);
     }
 
     public override void OnClick() {
