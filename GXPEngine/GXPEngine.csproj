@@ -36,13 +36,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Buttons\Button.cs" />
-    <Compile Include="Classes\Buttons\IButton.cs" />
-    <Compile Include="Classes\Buttons\MenuButton.cs" />
-    <Compile Include="Classes\Controller.cs" />
-    <Compile Include="Classes\Cursor.cs" />
-    <Compile Include="Classes\Text.cs" />
-    <Compile Include="Classes\Utility\Color3.cs" />
+    <Compile Include="FinalApproach\Buttons\Button.cs" />
+    <Compile Include="FinalApproach\Buttons\IInteractable.cs" />
+    <Compile Include="FinalApproach\Buttons\MenuButton.cs" />
+    <Compile Include="FinalApproach\Controller.cs" />
+    <Compile Include="FinalApproach\Cursor.cs" />
+    <Compile Include="FinalApproach\Text.cs" />
+    <Compile Include="FinalApproach\Utility\Color3.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="GXPEngine\Canvas.cs" />
     <Compile Include="GXPEngine\Game.cs" />
