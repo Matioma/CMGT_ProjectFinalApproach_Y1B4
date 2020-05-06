@@ -9,5 +9,6 @@ interface IButton
     void OnClick();
     void OnHover();
     void OnHoverEnd();
+    void OnClickRelease();
 }
 
