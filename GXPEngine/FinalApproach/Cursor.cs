@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 
@@ -8,8 +9,10 @@ using GXPEngine;
 class Cursor:AnimationSprite
 {
     static string cursorsSpriteSheet = "Art/Cursors.png";
+        //;
 
-    public Cursor():base(cursorsSpriteSheet, 2, 1) {   
+    public Cursor():base(cursorsSpriteSheet, 2, 1) {
+       
     }
     public Cursor(int width, int height) : this() {
         this.width = width;

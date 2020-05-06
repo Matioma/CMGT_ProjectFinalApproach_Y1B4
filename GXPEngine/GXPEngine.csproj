@@ -32,6 +32,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -41,6 +42,9 @@
     <Compile Include="FinalApproach\Buttons\MenuButton.cs" />
     <Compile Include="FinalApproach\Controller.cs" />
     <Compile Include="FinalApproach\Cursor.cs" />
+    <Compile Include="FinalApproach\LevelSystems\Scene.cs" />
+    <Compile Include="FinalApproach\Buttons\ButtonFactory\Factory.cs" />
+    <Compile Include="FinalApproach\LevelSystems\SceneManager.cs" />
     <Compile Include="FinalApproach\Text.cs" />
     <Compile Include="FinalApproach\Utility\Color3.cs" />
     <Compile Include="MyGame.cs" />
@@ -81,6 +85,17 @@
     <Compile Include="GXPEngine\FMOD\FMODSoundSystem.cs" />
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

@@ -8,10 +8,7 @@ using GXPEngine;
 
 public class Controller:GameObject
 {
-    readonly Cursor cursor;
-
-
-        
+    readonly Cursor cursor;    
     public Controller()
     {
         cursor = new Cursor(60,60,0);
@@ -26,7 +23,8 @@ public class Controller:GameObject
 
     private void CheckHoveredButtons()
     {
-        foreach (var child in parent.GetChildren())
+        // Go through Active Children
+        foreach (var child in SceneManager.Instance.CurrentLevel.GetChildren())
         {
             if (child is IInteractable)
             {
@@ -69,14 +67,5 @@ public class Controller:GameObject
             }
         }
         return false;
-        
-    
-    
-    
     }
-
-
-
-
-
 }
