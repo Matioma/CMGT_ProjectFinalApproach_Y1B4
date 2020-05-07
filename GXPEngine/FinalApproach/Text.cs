@@ -16,14 +16,14 @@ class Text : GameObject
         get { return _message; }
         set {
             _message = value;
-            DrawText();
+            //DrawText();
         }
     }
 
-    Color3 color = new Color3(255,0,0);
-    string fontFile = "STENCIL.TTF";
-    float textRotation = 0;
-    float fontSize = 20;
+    public Color3 color = new Color3(255,0,0);
+    public string fontFile = "STENCIL.TTF";
+    public float textRotation = 0;
+    public float fontSize = 20;
 
     public Text(string message, int x , int y, int width, int height, int rotation) {
         easyDraw = new EasyDraw(width,height);
@@ -33,7 +33,7 @@ class Text : GameObject
         AddChild(easyDraw);
     }
 
-    void DrawText() {
+    public void DrawText() {
         var _foo = new PrivateFontCollection();
         _foo.AddFontFile(fontFile);
 

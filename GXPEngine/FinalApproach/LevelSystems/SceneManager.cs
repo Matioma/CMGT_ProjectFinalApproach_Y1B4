@@ -11,7 +11,6 @@ public class SceneManager : GameObject
 {
     delegate void ActionBuilder(Scene scene);
 
-
     public static SceneManager _instance;
     public static SceneManager Instance{
         get {
@@ -37,8 +36,6 @@ public class SceneManager : GameObject
 
     //Scene Manager Fields
     List<Scene> scenes=new List<Scene>();
-
-
     Dictionary<string,Scene> levels= new Dictionary<string,Scene>();
     public Scene CurrentLevel { get; private set; } = null;
 
@@ -48,9 +45,14 @@ public class SceneManager : GameObject
         AddChild(new Controller());
 
         LoadLevel();
-        OpenScene(0);
+        OpenScene("Puzzle");
     }
 
+
+    /// <summary>
+    /// Opens the level
+    /// </summary>
+    /// <param name="index"></param>
     public void OpenScene(int index) {
         if (index >= 0 && index < scenes.Count)
         {
@@ -82,11 +84,53 @@ public class SceneManager : GameObject
 
        
     }
-    void LoadLevel() {
+
+
+
+    /// <summary>
+    /// Creates the scenes
+    /// </summary>
+    void LoadLevel()
+    {
         CreateMainMenu();
         CreateGallery();
         CreateLevel1();
+        CreatePuzzleLevel();
     }
+
+    
+
+    private void CreatePuzzleLevel()
+    {
+        AddLevel("Puzzle", (sceneRef) =>
+        {
+            var button = new Button("art/Button.jpg", 2, 1,
+                () =>
+                {
+                    Instance.OpenScene("Gallery");
+                });
+            button.CreateText("Gallery");
+            button.SetupText(() =>
+            {
+                button.textobject.fontSize = 15;
+                button.textobject.color = new Color3(0, 255, 0);
+                button.textobject.textRotation = 0;
+            });
+            button.SetXY(game.width - 120, game.height - 60);
+            sceneRef.AddChild(button);
+
+
+            var puzzleElement = new PuzzleElement("art/Button.jpg", 2, 1);
+            puzzleElement.SetXY(180, 180);
+            sceneRef.AddChild(puzzleElement);
+
+            var dictionary = new Dictionary<DraggableElement,Vec2>();
+            dictionary.Add(puzzleElement, new Vec2(500,320));
+            var puzzleGame = new Puzzle(dictionary);
+            AddChild(puzzleGame);
+        });
+    }
+
     void CreateMainMenu() {
         AddLevel("MainMenu",
            (sceneRef) => {
@@ -95,7 +139,12 @@ public class SceneManager : GameObject
                   {
                       Instance.OpenScene("VisitVanGogh");
                   });
-               button.AddText("Visit");
+               button.CreateText("Visit");
+               button.SetupText(() => {
+                   button.textobject.fontSize = 15;
+                   button.textobject.color = new Color3(0, 255, 0);
+                   button.textobject.textRotation = 0;
+               });
                button.SetXY(250, 120);
                sceneRef.AddChild(button);
 
@@ -106,7 +155,12 @@ public class SceneManager : GameObject
                     {
                         Instance.OpenScene("Gallery");
                     });
-               button.AddText("Galary");
+               button.CreateText("Galary");
+               button.SetupText(() => {
+                   button.textobject.fontSize = 15;
+                   button.textobject.color = new Color3(0, 255, 0);
+                   button.textobject.textRotation = 0;
+               });
                button.SetXY(250, 320);
                sceneRef.AddChild(button);
 
@@ -117,7 +171,12 @@ public class SceneManager : GameObject
                    {
                        System.Diagnostics.Process.Start("https://www.vangoghmuseum.nl/"); //Opens the Link
                 });
-               button.AddText("Museum");
+               button.CreateText("Museum");
+               button.SetupText(() => {
+                   button.textobject.fontSize = 15;
+                   button.textobject.color = new Color3(0, 255, 0);
+                   button.textobject.textRotation = 0;
+               });
                button.SetXY(250, 520);
                sceneRef.AddChild(button);
            });
@@ -135,7 +194,7 @@ public class SceneManager : GameObject
                    () => {
                        Instance.OpenScene("MainMenu");
                    });
-
+               button.CreateText("Random");
                button.SetXY(250, 120);
                sceneRef.AddChild(button);
            });
@@ -162,8 +221,14 @@ public class SceneManager : GameObject
 
                 var button = new Button("art/Button.jpg", 2, 1,
                     () => {
-                        Instance.OpenScene("MainMenu");
+                        Instance.OpenScene("Puzzle");
                     });
+                button.CreateText("Go");
+                button.SetupText(() => {
+                    button.textobject.fontSize = 15;
+                    button.textobject.color = new Color3(0, 255, 0);
+                    button.textobject.textRotation = 0;
+                });
                 button.SetXY(250, game.height - 120);
                 sceneRef.AddChild(button);
         });

@@ -12,6 +12,9 @@ delegate void Action();
 abstract class HUDElement : AnimationSprite,IInteractable
 {
     bool _isHovered = false;
+
+
+    
     public bool IsHovered {
         get { return _isHovered; }
         set { 
@@ -29,8 +32,21 @@ abstract class HUDElement : AnimationSprite,IInteractable
         }
     }
 
-    ///
-    public string ButtonTarget{ set; get; }="MainMenu";
+    public Text textobject;
+    public void CreateText(string text)
+    {
+        textobject = new Text(text, (int)x - width / 2, (int)y - height / 2, width, height, 0);
+        AddChild(textobject);
+    }
+    public void SetupText(Action textConfigurarion)
+    {
+        if (textobject == null) {
+            Console.WriteLine("Text object does not exist");
+        }
+        textConfigurarion.Invoke();
+        textobject.DrawText();
+    }
+
 
     protected Action onClickAction;
 
