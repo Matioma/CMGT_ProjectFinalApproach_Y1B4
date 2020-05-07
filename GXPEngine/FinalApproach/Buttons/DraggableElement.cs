@@ -8,7 +8,7 @@ using GXPEngine;
 class DraggableElement : HUDElement
 {
     Vec2 _mapOffset;
-    bool IsClicked = false; 
+    protected bool IsClicked = false; 
 
 
 

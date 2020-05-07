@@ -153,6 +153,8 @@ public class SceneManager : GameObject
     {
         AddLevel("Puzzle", (sceneRef) =>
         {
+
+
             var button = new Button("art/Button.jpg", 2, 1,
                 () =>
                 {
@@ -168,6 +170,30 @@ public class SceneManager : GameObject
             button.SetXY(game.width - 120, game.height - 60);
             sceneRef.AddChild(button);
 
+            var background = new Sprite("Art/Puzzles/Puzzle1/puzzle1_background.png");
+            background.SetOrigin(background.width / 2, background.height / 2);
+            background.SetXY(game.width / 2, game.height / 2);
+            sceneRef.AddChild(background);
+
+
+
+            var dictionary = new Dictionary<DraggableElement, Vec2>();
+
+
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
+
+                    string fileName = "Art/Puzzles/Puzzle1/" + (i * 5 + j + 1) + ".png";
+
+                    var test = new PuzzleElement(fileName, 1, 1);
+                    test.SetXY(game.width / 6 * i, game.width / 6 * j);
+
+
+                    sceneRef.AddChild(test);
+                   // dictionary.Add(puzzleElement, new Vec2(game.width / 6 * i, game.width / 6 * j));
+                }
+            }
+
 
             var puzzleElement = new PuzzleElement("art/Button.jpg", 2, 1);
             puzzleElement.SetXY(180, 180);
@@ -175,8 +201,8 @@ public class SceneManager : GameObject
 
 
 
-            var dictionary = new Dictionary<DraggableElement,Vec2>();
-            dictionary.Add(puzzleElement, new Vec2(500,320));
+
+
 
             var puzzleGame = new Puzzle(dictionary);
             puzzleGame.OnPuzzleSolved = () =>

@@ -29,15 +29,17 @@ class PuzzleElement:DraggableElement
 
     public override void OnClick()
     {
-        if (!onRightPosition)
-        {
-            base.OnClick();
-        }
-        else { 
-        
-        
-        }
-        
+        base.OnClick();
+        //Console.WriteLine(this);
+        //if (!onRightPosition)
+        //{
+        //    base.OnClick();
+        //}
+        //else { 
+
+
+        //}
+
     }
 
     public override void OnClickPressed()
@@ -50,34 +52,41 @@ class PuzzleElement:DraggableElement
 
     public override void OnClickRelease()
     {
+        base.OnClickRelease();
         if (!onRightPosition)
         {
-            base.OnClickRelease();
-
             Vec2 puzzleElementPoz = new Vec2(x, y);
 
             Puzzle puzzleObject = FindPuzzleObject();
 
 
-            Vec2 targetPosition = puzzleObject.puzzleRelationships[this];
-            if ((puzzleElementPoz - targetPosition).Length() <= snapDistance)
+            if (puzzleObject.puzzleRelationships.ContainsKey(this))
             {
-                SetXY(targetPosition.x, targetPosition.y);
-                onRightPosition = true;
+                Vec2 targetPosition = puzzleObject.puzzleRelationships[this];
+                if ((puzzleElementPoz - targetPosition).Length() <= snapDistance)
+                {
+                    SetXY(targetPosition.x, targetPosition.y);
+                    onRightPosition = true;
 
-                if (puzzleObject.isSolved()) {
-                    if (puzzleObject.OnPuzzleSolved != null) {
-                        puzzleObject.OnPuzzleSolved.Invoke();
-                    }
-                    else {
-                        Console.WriteLine("No on puzzle solved events assigned");
+                    if (puzzleObject.isSolved())
+                    {
+                        if (puzzleObject.OnPuzzleSolved != null)
+                        {
+                            puzzleObject.OnPuzzleSolved.Invoke();
+                        }
+                        else
+                        {
+                            Console.WriteLine("No on puzzle solved events assigned");
+                        }
                     }
                 }
-
-
+            }
+            else {
+                Console.WriteLine("This element is not in the PuzzlRelationships dictionary from the CurrentScene");
             }
         }
-    }
+
+    }   
 
     public override void OnHover()
     {
