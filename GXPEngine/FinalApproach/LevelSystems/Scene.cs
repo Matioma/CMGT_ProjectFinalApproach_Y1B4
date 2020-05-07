@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using GXPEngine;
+using GXPEngine.FinalApproach;
 
 public class Scene:GameObject
 {
@@ -27,20 +28,26 @@ public class Scene:GameObject
     }
 
     void BuildLevel0() {
-        var button = new Button("art/Button.jpg", 2, 1);
-        button.ButtonTarget = "Level1";
+        var button = new Button("art/Button.jpg", 2, 1, 
+            ()=> {
+                SceneManager.Instance.OpenScene("Level1"); 
+            });
         button.SetXY(250, 120);
         AddChild(button);
 
 
-        button = new Button("art/Button.jpg", 2, 1);
-        button.ButtonTarget = "Level2";
+        button = new Button("art/Button.jpg", 2, 1,
+             () => {
+                 SceneManager.Instance.OpenScene("Level2");
+             });
         button.SetXY(250, 320);
         AddChild(button);
 
 
-        button = new Button("art/Button.jpg", 2, 1);
-        button.ButtonTarget = "Level1";
+        button = new Button("art/Button.jpg", 2, 1,
+            () => {
+                Console.WriteLine("Open the link");
+            });
         button.SetXY(250, 520);
         AddChild(button);
     }
@@ -49,27 +56,42 @@ public class Scene:GameObject
 
     void BuildLevel1()
     {
-        var draggableElement = new DraggableElement("art/MuseumMap.jpg", 1, 1);
-        draggableElement.width *= 2;
-        draggableElement.height *= 2;
-        AddChild(draggableElement);
-
-
-        var button = new Button("art/Button.jpg", 2, 1);
-        button.SetXY(250, 120);
-        AddChild(button);
-    }
-
-
-    void BuildLevel2()
-    {
         var backgroundsample = new AnimationSprite("art/backgroundsample.jpg", 1, 1);
         backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
         backgroundsample.SetXY(game.width / 2, game.height / 2);
         AddChild(backgroundsample);
 
 
-        var button = new Button("art/Button.jpg", 2, 1);
+
+
+        var character = new Character("art/vangoghtalking.png", 3,1);
+        character.SetXY(200,400);
+        
+        AddChild(character);
+
+
+
+        var button = new Button("art/Button.jpg", 2, 1,
+            ()=> {
+                SceneManager.Instance.OpenScene("MainMenu");
+            });
+        button.SetXY(250, game.height-120);
+        AddChild(button);
+    }
+
+
+    void BuildLevel2()
+    {
+        var draggableElement = new DraggableElement("art/MuseumMap.jpg", 1, 1);
+        draggableElement.width *= 2;
+        draggableElement.height *= 2;
+        AddChild(draggableElement);
+
+        var button = new Button("art/Button.jpg", 2, 1,
+            ()=> {
+                SceneManager.Instance.OpenScene("MainMenu");
+            });
+
         button.SetXY(250, 120);
         AddChild(button);
     }

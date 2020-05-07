@@ -6,6 +6,9 @@ using System.Xml.Schema;
 using GXPEngine;
 using TiledMapParser;
 
+
+delegate void Action();
+
 abstract class HUDElement : AnimationSprite,IInteractable
 {
     bool _isHovered = false;
@@ -26,16 +29,13 @@ abstract class HUDElement : AnimationSprite,IInteractable
         }
     }
 
-
     ///
     public string ButtonTarget{ set; get; }="MainMenu";
 
-
+    protected Action onClickAction;
 
     public HUDElement(string path, int cols, int rows) : base(path, cols, rows) {
         SetOrigin(width / 2, height / 2);
-
-        
     }
     public abstract void OnClick();
     public abstract void OnHover();

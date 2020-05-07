@@ -41,6 +41,7 @@
     <Compile Include="FinalApproach\Buttons\DraggableElement.cs" />
     <Compile Include="FinalApproach\Buttons\IInteractable.cs" />
     <Compile Include="FinalApproach\Buttons\Button.cs" />
+    <Compile Include="FinalApproach\Character.cs" />
     <Compile Include="FinalApproach\Controller.cs" />
     <Compile Include="FinalApproach\Cursor.cs" />
     <Compile Include="FinalApproach\LevelSystems\Scene.cs" />

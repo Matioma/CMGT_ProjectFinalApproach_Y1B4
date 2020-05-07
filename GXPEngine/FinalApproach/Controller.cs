@@ -23,8 +23,16 @@ public class Controller:GameObject
 
     private void CheckHoveredButtons()
     {
+        
+
+        var currentScene = SceneManager.Instance.CurrentLevel;
+
+        if(currentScene == null)
+        {
+            return;
+        }
         // Go through Active Children
-        foreach (var child in SceneManager.Instance.CurrentLevel.GetChildren())
+        foreach (var child in currentScene.GetChildren())
         {
             if (child is IInteractable)
             {

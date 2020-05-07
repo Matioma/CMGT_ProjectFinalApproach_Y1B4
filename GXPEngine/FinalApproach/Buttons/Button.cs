@@ -17,8 +17,28 @@ class Button : HUDElement
         AddChild(textObject);
     }
 
+
+
+    /// <summary>
+    /// Button Constructor
+    /// </summary>
+    /// <param name="path">SpriteSheet path </param>
+    /// <param name="cols">number of columns</param>
+    /// <param name="rows">number of rows</param>
+    /// <param name="onClickAction">Actions should take place</param>
+    public Button(string path, int cols, int rows, Action onClickAction) : this(path, cols, rows)
+    {
+        this.onClickAction += onClickAction;
+    }
+
     public override void OnClick() {
-        //TO DO
+        if (onClickAction != null)
+        {
+            onClickAction.Invoke();
+        }
+        else {
+            Console.WriteLine("Default onClick action");
+        }
     }
     public override void OnHover() {
         SetFrame(1);
@@ -28,7 +48,7 @@ class Button : HUDElement
     }
     public override void OnClickRelease()
     {
-        SceneManager.Instance.OpenScene(ButtonTarget);
+        //SceneManager.Instance.OpenScene(ButtonTarget);
     }
     public override void OnClickPressed()
     {

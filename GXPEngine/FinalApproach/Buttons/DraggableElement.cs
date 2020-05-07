@@ -26,7 +26,7 @@ class DraggableElement : HUDElement
 
     public override void OnClick()
     {
-
+        //Compute the painting offset from mouse
         Vec2 mousePos = new Vec2(Input.mouseX, Input.mouseY);
         Vec2 mapPos = new Vec2(x, y);
         _mapOffset = mapPos - mousePos;

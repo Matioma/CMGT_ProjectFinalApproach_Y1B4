@@ -9,20 +9,11 @@ using TiledMapParser;
 public class MyGame : Game
 {
 
-    public static readonly SceneManager SceneManger;
+    public static SceneManager sceneManger { get;private set; }
     public MyGame() : base(1024, 768, false)		// Create a window that's 800x600 and NOT fullscreen
     {
-        AddChild(new SceneManager());
-        //AddChild(new Scene());
-
-
-        //var button = new MenuButton("art/Button.jpg", 2, 1);
-        //button.SetXY(250, 120);
-
-
-
-        //AddChild(button);
-        //AddChild(new Controller());
+        sceneManger = new SceneManager();
+        AddChild(sceneManger);
     }
 
     void Update()
