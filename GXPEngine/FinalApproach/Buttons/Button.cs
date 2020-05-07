@@ -13,8 +13,13 @@ class Button : HUDElement
 
     public Button(string path, int cols, int rows) : base(path, cols, rows)
     {
-        var textObject = new Text("Test", (int)x - width / 2, (int)y - height / 2, width, height, 0);
-        AddChild(textObject);
+        //AddText("Random");
+    }
+
+
+    public void AddText(string text) {
+        var textMassage = new Text(text, (int)x - width / 2, (int)y - height / 2, width, height, 0);
+        AddChild(textMassage);
     }
 
 

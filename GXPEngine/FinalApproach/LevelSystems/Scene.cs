@@ -32,6 +32,7 @@ public class Scene:GameObject
             ()=> {
                 SceneManager.Instance.OpenScene("Level1"); 
             });
+        button.AddText("Visit");
         button.SetXY(250, 120);
         AddChild(button);
 
@@ -40,14 +41,16 @@ public class Scene:GameObject
              () => {
                  SceneManager.Instance.OpenScene("Level2");
              });
+        button.AddText("Galary");
         button.SetXY(250, 320);
         AddChild(button);
 
 
         button = new Button("art/Button.jpg", 2, 1,
             () => {
-                Console.WriteLine("Open the link");
+                System.Diagnostics.Process.Start("https://www.vangoghmuseum.nl/");
             });
+        button.AddText("Museum");
         button.SetXY(250, 520);
         AddChild(button);
     }

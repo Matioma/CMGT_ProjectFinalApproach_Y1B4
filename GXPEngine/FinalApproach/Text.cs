@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 using GXPEngine;
@@ -10,7 +11,14 @@ class Text : GameObject
 {
     EasyDraw easyDraw;
 
-    public string message = "Test";
+    public string _message = "Test";
+    public string Message {
+        get { return _message; }
+        set {
+            _message = value;
+            DrawText();
+        }
+    }
 
     Color3 color = new Color3(255,0,0);
     string fontFile = "STENCIL.TTF";
@@ -21,10 +29,8 @@ class Text : GameObject
         easyDraw = new EasyDraw(width,height);
         this.x = x;
         this.y = y;
-        this.message = message;
-
+        Message = message;
         AddChild(easyDraw);
-        DrawText();
     }
 
     void DrawText() {
@@ -36,7 +42,7 @@ class Text : GameObject
         easyDraw.Fill(color.x, color.y,color.z);
 
         //Draw message in the middle of the button
-        easyDraw.Text(message, easyDraw.width / 2 - (message.Length / 2*fontSize), easyDraw.height/2+ fontSize);
+        easyDraw.Text(_message, easyDraw.width / 2 - (_message.Length / 2*fontSize), easyDraw.height/2+ fontSize);
     }
 
 }
