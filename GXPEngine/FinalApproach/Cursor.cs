@@ -6,7 +6,7 @@ using System.Text;
 
 using GXPEngine;
 
-class Cursor:AnimationSprite
+public class Cursor:AnimationSprite
 {
     static string cursorsSpriteSheet = "Art/Cursors.png";
         //;

@@ -8,7 +8,7 @@ using GXPEngine;
 class PuzzleElement:DraggableElement
 {
     float snapDistance = 50;
-    bool onRightPosition=false;
+    public bool onRightPosition { get; private set; } =false;
 
 
     public PuzzleElement(string file, int cols, int rows) : base(file, cols, rows) {
@@ -56,11 +56,25 @@ class PuzzleElement:DraggableElement
 
             Vec2 puzzleElementPoz = new Vec2(x, y);
 
-            Vec2 targetPosition = FindPuzzleObject().puzzleRelationships[this];
+            Puzzle puzzleObject = FindPuzzleObject();
+
+
+            Vec2 targetPosition = puzzleObject.puzzleRelationships[this];
             if ((puzzleElementPoz - targetPosition).Length() <= snapDistance)
             {
                 SetXY(targetPosition.x, targetPosition.y);
                 onRightPosition = true;
+
+                if (puzzleObject.isSolved()) {
+                    if (puzzleObject.OnPuzzleSolved != null) {
+                        puzzleObject.OnPuzzleSolved.Invoke();
+                    }
+                    else {
+                        Console.WriteLine("No on puzzle solved events assigned");
+                    }
+                }
+
+
             }
         }
     }

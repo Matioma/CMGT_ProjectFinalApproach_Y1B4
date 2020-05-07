@@ -39,13 +39,16 @@ public class SceneManager : GameObject
     Dictionary<string,Scene> levels= new Dictionary<string,Scene>();
     public Scene CurrentLevel { get; private set; } = null;
 
+    private  Controller controller;
+
 
     public SceneManager() {
         Instance = this;
-        AddChild(new Controller());
+        controller = new Controller();
+        AddChild(controller);
 
         LoadLevel();
-        OpenScene("Puzzle");
+        OpenScene("MainMenu");
     }
 
 
@@ -93,6 +96,52 @@ public class SceneManager : GameObject
     void LoadLevel()
     {
         CreateMainMenu();
+
+        AddLevel("Scene1",
+            (sceneRef) => {
+                //Console.WriteLine("TEst1");
+                //controller.cursor.SetCursor(1);
+
+                
+                var backgroundsample = new AnimationSprite("art/Background1.png", 1, 1);
+                backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
+                backgroundsample.SetXY(game.width / 2, game.height / 2);
+                sceneRef.AddChild(backgroundsample);
+
+                var imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
+                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                imageLayer.SetXY(300, 450);
+                sceneRef.AddChild(imageLayer);
+
+                var character = new Character("art/vangoghpainting.png", 6, 1);
+                character.SetXY(300, 450);
+                sceneRef.AddChild(character);
+
+              
+
+                var foreGround = new AnimationSprite("art/ForeGround1.png", 1, 1);
+                foreGround.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
+                foreGround.SetXY(game.width / 2, game.height / 2);
+                sceneRef.AddChild(foreGround);
+
+                var dialogBox = new TextDialogBox("Example", 500,300,120,200,0);
+                sceneRef.AddChild(dialogBox);
+
+                var button = new Button("art/transparent.png",1, 1,
+                    () =>
+                    {
+                        Instance.OpenScene("VisitVanGogh");
+                    });
+                button.width=120;
+                button.height=200;
+            
+                button.SetXY(350, game.height - 250);
+                sceneRef.AddChild(button);
+            });
+
+
+
+
         CreateGallery();
         CreateLevel1();
         CreatePuzzleLevel();
@@ -124,20 +173,26 @@ public class SceneManager : GameObject
             puzzleElement.SetXY(180, 180);
             sceneRef.AddChild(puzzleElement);
 
+
+
             var dictionary = new Dictionary<DraggableElement,Vec2>();
             dictionary.Add(puzzleElement, new Vec2(500,320));
+
             var puzzleGame = new Puzzle(dictionary);
+            puzzleGame.OnPuzzleSolved = () =>
+            {
+                Instance.OpenScene("Gallery");
+            };
             AddChild(puzzleGame);
         });
     }
-
     void CreateMainMenu() {
         AddLevel("MainMenu",
            (sceneRef) => {
                var button = new Button("art/Button.jpg", 2, 1,
                   () =>
                   {
-                      Instance.OpenScene("VisitVanGogh");
+                      Instance.OpenScene("Scene1");
                   });
                button.CreateText("Visit");
                button.SetupText(() => {
@@ -203,19 +258,39 @@ public class SceneManager : GameObject
     {
         AddLevel("VisitVanGogh",
             (sceneRef) => {
-                var backgroundsample = new AnimationSprite("art/backgroundsample.png", 1, 1);
+                var backgroundsample = new AnimationSprite("art/Background1.png", 1, 1);
                 backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
                 backgroundsample.SetXY(game.width / 2, game.height / 2);
                 sceneRef.AddChild(backgroundsample);
+
+                var imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
+                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                imageLayer.SetXY(300, 450);
+                sceneRef.AddChild(imageLayer);
 
                 var character = new Character("art/vangoghtalking.png", 3, 1);
                 character.SetXY(200, 400);
                 sceneRef.AddChild(character);
 
-                var foreGround = new AnimationSprite("art/ForeGround.png", 1, 1);
+                var foreGround = new AnimationSprite("art/ForeGround1.png", 1, 1);
                 foreGround.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
                 foreGround.SetXY(game.width / 2, game.height / 2);
                 sceneRef.AddChild(foreGround);
+
+
+                var textBox = new Button("art/transparent.png", 1, 1,
+                () =>
+                {
+                });
+                textBox.CreateText("I have asdae \n test asdfasr sda \n sdf aer sdf ae \n test srseffa fase \n asdfaesf\n asdf sdfasdf\n");
+                textBox.SetupText(() => {
+                    textBox.textobject.fontSize = 10;
+                    textBox.textobject.color = new Color3(0, 255, 0);
+                    textBox.textobject.textRotation = 0;
+                });
+
+                textBox.SetXY(650, game.height - 450);
+                sceneRef.AddChild(textBox);
 
 
 

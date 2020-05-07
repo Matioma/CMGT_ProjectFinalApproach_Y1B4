@@ -8,7 +8,7 @@ using GXPEngine;
 
 public class Controller:GameObject
 {
-    readonly Cursor cursor;    
+    public readonly Cursor cursor;    
     public Controller()
     {
         cursor = new Cursor(60,60,0);
