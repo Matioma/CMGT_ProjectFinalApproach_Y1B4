@@ -45,6 +45,7 @@ public class Controller:GameObject
         }
         if (Input.GetMouseButtonDown(0))
         {
+
             interactedElement = hoveredObject;
             if (interactedElement != null) {
                 

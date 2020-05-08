@@ -212,24 +212,36 @@ public class SceneManager : GameObject
     void CreateMainMenu() {
         AddLevel("MainMenu",
            (sceneRef) => {
-               var background = new AnimationSprite("Art/MenuBG.png",1,1);
-               sceneRef.AddChild(background);
+               //var background = new AnimationSprite("Art/Menutopleaveanimation.png", 17,1);
+               //var background = new AnimatedImage("Art/testAnimation.jpg", 14, 1);
+
+
+               //var background = new Sprite("Art/MenuBG.png");
+
+               //var animatedImage = new AnimatedImage("Art/MainMenuAnimation/Top/frame", ".png",5);
+               
+               
+               var animatedImage = new AnimatedImage();
+               animatedImage.AddAnimation("Art/MainMenuAnimation/Top/frame", ".png", 18, "top");
+               animatedImage.AddAnimation("Art/MainMenuAnimation/Bottom/frame", ".png", 16, "bottom");
+               animatedImage.AddAnimation("Art/MainMenuAnimation/Middle/frame", ".png", 18, "middle");
+               animatedImage.PlayAnimation("middle");
+               //animatedImage.SetFrame(5);
+               sceneRef.AddChild(animatedImage);
+
+
+               //background.width = game.width;
+               //background.height = game.height;
+               //sceneRef.AddChild(background);
 
                var imageLayer = new Sprite("Art/Menu text.png");
                sceneRef.AddChild(imageLayer);
-
 
                var button = new Button("art/transparent.png", 1, 1,
                   () =>
                   {
                       Instance.OpenScene("Scene1");
                   });
-               //button.CreateText("Visit");
-               //button.SetupText(() => {
-               //    button.textobject.fontSize = 15;
-               //    button.textobject.color = new Color3(0, 255, 0);
-               //    button.textobject.textRotation = 0;
-               //});
                button.SetXY(310, 150);
                button.width = 280;
                button.height = 120;
@@ -242,12 +254,6 @@ public class SceneManager : GameObject
                     {
                         Instance.OpenScene("Gallery");
                     });
-               //button.CreateText("Galary");
-               //button.SetupText(() => {
-               //    button.textobject.fontSize = 15;
-               //    button.textobject.color = new Color3(0, 255, 0);
-               //    button.textobject.textRotation = 0;
-               //});
                button.SetXY(350, 330);
                button.width = 280;
                button.height = 120;
@@ -260,12 +266,6 @@ public class SceneManager : GameObject
                    {
                        System.Diagnostics.Process.Start("https://www.vangoghmuseum.nl/"); //Opens the Link
                 });
-               //button.CreateText("Museum");
-               //button.SetupText(() => {
-               //    button.textobject.fontSize = 15;
-               //    button.textobject.color = new Color3(0, 255, 0);
-               //    button.textobject.textRotation = 0;
-               //});
                button.SetXY(310, 490);
                button.width = 280;
                button.height = 120;
