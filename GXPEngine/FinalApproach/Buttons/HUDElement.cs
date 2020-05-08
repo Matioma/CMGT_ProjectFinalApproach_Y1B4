@@ -7,9 +7,9 @@ using GXPEngine;
 using TiledMapParser;
 
 
-delegate void Action();
+public delegate void Action();
 
-abstract class HUDElement : AnimationSprite,IInteractable
+public abstract class HUDElement : AnimationSprite,IInteractable
 {
     bool _isHovered = false;
 

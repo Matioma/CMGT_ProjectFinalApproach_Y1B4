@@ -42,6 +42,7 @@ public class SceneManager : GameObject
     private  Controller controller;
 
 
+    Random random = new Random();
     public SceneManager() {
         Instance = this;
         controller = new Controller();
@@ -98,11 +99,7 @@ public class SceneManager : GameObject
         CreateMainMenu();
 
         AddLevel("Scene1",
-            (sceneRef) => {
-                //Console.WriteLine("TEst1");
-                //controller.cursor.SetCursor(1);
-
-                
+            (sceneRef) => {                
                 var backgroundsample = new AnimationSprite("art/Background1.png", 1, 1);
                 backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
                 backgroundsample.SetXY(game.width / 2, game.height / 2);
@@ -127,7 +124,7 @@ public class SceneManager : GameObject
                 var dialogBox = new TextDialogBox("Example", 500,300,120,200,0);
                 sceneRef.AddChild(dialogBox);
 
-                var button = new Button("art/transparent.png",1, 1,
+                var button = new Button("art/transparent.png", 1, 1,
                     () =>
                     {
                         Instance.OpenScene("VisitVanGogh");
@@ -180,24 +177,62 @@ public class SceneManager : GameObject
             var dictionary = new Dictionary<DraggableElement, Vec2>();
 
 
+            List<PuzzleElement> puzzleElements = new List<PuzzleElement>();
+            Vec2[] coordinates ={
+                new Vec2(218.50f,166.00f),
+                new Vec2(361.50f,166.50f),
+                new Vec2(166.00f,166.00f),
+                new Vec2(665.00f,153.00f),
+                new Vec2(808.50f,165.50f),
+
+                new Vec2(136,218),
+                new Vec2(276,218),
+                new Vec2(412,215),
+                new Vec2(572,217),
+                new Vec2(711,216),
+
+                new Vec2(135,366),
+                new Vec2(252,365),
+                new Vec2(423,360),
+                new Vec2(559,360),
+                new Vec2(728,360),
+
+                new Vec2(135,508),
+                new Vec2(273,504),
+                new Vec2(409,502),
+                new Vec2(575,500),
+                new Vec2(707,503)
+            };
+
+
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 5; j++) {
 
                     string fileName = "Art/Puzzles/Puzzle1/" + (i * 5 + j + 1) + ".png";
-
                     var test = new PuzzleElement(fileName, 1, 1);
-                    test.SetXY(game.width / 6 * i, game.width / 6 * j);
+                    puzzleElements.Add(test);
 
+                    Vec2 position = coordinates[i * 5 + j];
+                    test.SetXY(position.x, position.y);
+
+                    //test.SetXY(155 + (game.width-155*2)/ 5 * j +test.width/2, 132+(game.height-132*2)/ 4 * i+ test.height / 2);
+                    //test.SetXY(random.Next(155, game.width - 155), random.Next(132, game.height - 132));
 
                     sceneRef.AddChild(test);
-                   // dictionary.Add(puzzleElement, new Vec2(game.width / 6 * i, game.width / 6 * j));
+                    //Vec2 slotPosition = new Vec2();
+                    //slotPosition.x =155 + (game.width - 155 * 2) / 5 * j + test.width / 2;
+                    //slotPosition.y = 132 + (game.height - 132 * 2) / 4 * i + test.height / 2;
+
+                    //dictionary.Add(test, slotPosition);
                 }
             }
+            //dictionary.Add();
 
 
-            var puzzleElement = new PuzzleElement("art/Button.jpg", 2, 1);
-            puzzleElement.SetXY(180, 180);
-            sceneRef.AddChild(puzzleElement);
+
+            //var puzzleElement = new PuzzleElement("art/Button.jpg", 2, 1);
+            //puzzleElement.SetXY(180, 180);
+            //sceneRef.AddChild(puzzleElement);
 
 
 

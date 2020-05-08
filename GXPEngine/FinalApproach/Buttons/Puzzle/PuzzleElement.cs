@@ -15,8 +15,6 @@ class PuzzleElement:DraggableElement
         SetOrigin(width / 2, height / 2);
     }
 
-
-
     public Puzzle FindPuzzleObject() {
         foreach (var obj in SceneManager.Instance.GetChildren()) {
             if (obj is Puzzle) {
@@ -25,23 +23,14 @@ class PuzzleElement:DraggableElement
         }
         return null;
     }
-
-
     public override void OnClick()
     {
-        base.OnClick();
-        //Console.WriteLine(this);
-        //if (!onRightPosition)
-        //{
-        //    base.OnClick();
-        //}
-        //else { 
-
-
-        //}
+        if (!onRightPosition)
+        {
+            base.OnClick();
+        }
 
     }
-
     public override void OnClickPressed()
     {
         if (!onRightPosition)
@@ -49,7 +38,6 @@ class PuzzleElement:DraggableElement
             base.OnClickPressed();
         }
     }
-
     public override void OnClickRelease()
     {
         base.OnClickRelease();
@@ -85,14 +73,11 @@ class PuzzleElement:DraggableElement
                 Console.WriteLine("This element is not in the PuzzlRelationships dictionary from the CurrentScene");
             }
         }
-
     }   
-
     public override void OnHover()
     {
         base.OnHover();
     }
-
     public override void OnHoverEnd()
     {
         base.OnHoverEnd();

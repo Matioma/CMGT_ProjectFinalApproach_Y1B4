@@ -8,92 +8,89 @@ using GXPEngine;
 
 public class Controller:GameObject
 {
+    public static Controller Instance;
+
+
+
     public readonly Cursor cursor;
 
-    List<HUDElement> listOfOverlapedObjects = new List<HUDElement>();
+    List<HUDElement> listOfHoveredObjects = new List<HUDElement>();
+
+    HUDElement hoveredObject = null;
+    public HUDElement interactedElement = null;
+
 
     public Controller()
     {
+        Instance = this;
         cursor = new Cursor(60,60,0);
         AddChild(cursor);
     }
-
-
-
-    
     void Update()
     {
         cursor.followMouse();
-        CheckHoveredButtons();
+        CheckHoveredHudElements();
+        InputToInteractedElement();
 
-        if(listOfOverlapedObjects.Count > 0)
-        {
-            var HudElement = listOfOverlapedObjects[listOfOverlapedObjects.Count - 1];
-
-
-            HudElement.IsHovered = true;
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                HudElement.OnClick();
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                HudElement.OnClickRelease();
-                Console.WriteLine("Button Released");
-            }
-            if (Input.GetMouseButton(0))
-            {
-                HudElement.OnClickPressed();
-            }
-        }
-        listOfOverlapedObjects = new List<HUDElement>();
+        listOfHoveredObjects = new List<HUDElement>(); //Reset the list of hovered
     }
 
-    private void CheckHoveredButtons()
+    private void InputToInteractedElement()
+    {
+        if (listOfHoveredObjects.Count > 0)
+        {
+            var HudElement = listOfHoveredObjects[listOfHoveredObjects.Count - 1];
+            HudElement.IsHovered = true;
+            hoveredObject = HudElement;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            interactedElement = hoveredObject;
+            if (interactedElement != null) {
+                
+                interactedElement.OnClick();
+            }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (interactedElement != null)
+            {
+                interactedElement.OnClickRelease();
+                interactedElement = null;
+            }
+        }
+        if (Input.GetMouseButton(0))
+        {
+            if (interactedElement != null)
+            {
+                interactedElement.OnClickPressed();
+                
+            }
+        }
+    }
+
+    private void CheckHoveredHudElements()
     {
         var currentScene = SceneManager.Instance.CurrentLevel;
-
         if(currentScene == null)
         {
             return;
         }
-
-
-        
         foreach (var child in currentScene.GetChildren())
         {
             if (child is IInteractable)
             {
-                bool objIsHovered = mouseOverButton(child as HUDElement);
-
-                if (objIsHovered)
+                if (mouseOverButton(child as HUDElement))
                 {
-                    listOfOverlapedObjects.Add(child as HUDElement);
-                }
-                if (!objIsHovered) {
+                    listOfHoveredObjects.Add(child as HUDElement);
+                }else{
                     var HudElement = child as HUDElement;
-                    HudElement.IsHovered = false;
+                    if (HudElement == hoveredObject)
+                    {
+                        hoveredObject.IsHovered = false;
+                        hoveredObject = null;
+                    }
                 }
-
-                
-               
-
-                //if (objIsHovered)
-                //{
-                //    if (Input.GetMouseButtonDown(0))
-                //    {
-                //        HudElement.OnClick();
-                //    }
-                //    if (Input.GetMouseButtonUp(0))
-                //    {
-                //        HudElement.OnClickRelease();
-                //    }
-                //    if (Input.GetMouseButton(0))
-                //    {
-                //        HudElement.OnClickPressed();
-                //    }
-                //}
             }
         }
 
@@ -123,25 +120,4 @@ public class Controller:GameObject
         return false;
     }
 
-
-    bool mouseOverButton(HUDElement button, Vec2 scaleCollider)
-    {
-        int width = button.width;
-        int height = button.height;
-        int xMin = (int)button.x - (width / 2 * (int)scaleCollider.x);
-        int yMin = (int)button.y - (height / 2 * (int)scaleCollider.y);
-
-
-        if (Input.mouseX > xMin && Input.mouseX < xMin + width)
-        {
-            if (Input.mouseY > yMin && Input.mouseY < yMin + height)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
- 
 }

@@ -7,7 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 using GXPEngine;
-class Text : GameObject
+public class Text : GameObject
 {
     EasyDraw easyDraw;
 
