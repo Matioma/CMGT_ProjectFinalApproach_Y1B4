@@ -13,11 +13,7 @@ class Button : HUDElement
 
     public Button(string path, int cols, int rows) : base(path, cols, rows)
     {
-        //AddText("Random");
     }
-
-  
-
 
 
     /// <summary>

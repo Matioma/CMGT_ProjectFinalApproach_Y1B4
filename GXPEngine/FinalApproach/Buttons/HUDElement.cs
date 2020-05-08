@@ -33,6 +33,8 @@ public abstract class HUDElement : AnimationSprite,IInteractable
     }
 
     public Text textobject;
+   // public TextDialogBox textDialogBox;
+
     public void CreateText(string text)
     {
         textobject = new Text(text, (int)x - width / 2, (int)y - height / 2, width, height, 0);
@@ -47,6 +49,13 @@ public abstract class HUDElement : AnimationSprite,IInteractable
         textobject.DrawText();
     }
 
+
+ /*   public void CreateDialogBox(string text)
+    {
+        textobject = new Text(text, (int)x - width / 2, (int)y - height / 2, width, height, 0);
+        AddChild(textobject);
+    }
+*/
 
     protected Action onClickAction;
 

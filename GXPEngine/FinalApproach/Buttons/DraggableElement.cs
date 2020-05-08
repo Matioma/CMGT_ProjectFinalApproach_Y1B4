@@ -10,21 +10,12 @@ class DraggableElement : HUDElement
     Vec2 _mapOffset;
     protected bool IsClicked = false; 
 
-
-
-
     public DraggableElement(string path, int cols, int rows) : base(path, cols, rows){
-
     }
-
     public void Update() {
         if(IsClicked)
             DragImage();
     }
-
-
-
-
     public void DragImage() {
         Vec2 mousePos = new Vec2(Input.mouseX, Input.mouseY);
         Vec2 newMapPos =mousePos + _mapOffset;

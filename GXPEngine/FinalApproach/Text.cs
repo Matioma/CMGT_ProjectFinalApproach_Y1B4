@@ -72,43 +72,36 @@ public class Text : GameObject
 class TextDialogBox : GameObject {
     EasyDraw easyDraw;
 
-    public string _message = "Test";
-    public string Message
-    {
-        get { return _message; }
-        set
-        {
-            _message = value;
-            DrawText();
-        }
-    }
-
-    public Color3 color = new Color3(255, 0, 0);
     public string fontFile = "STENCIL.TTF";
-    public float textRotation = 0;
+    public string Message = "Test";
+    public Color3 color = new Color3(255, 0, 0);
+    
     public float fontSize = 20;
 
 
-    public TextDialogBox(string message, int x, int y, int width, int height, int rotation)
+    public TextDialogBox(string message, int x, int y, int width, int height)
     {
+        
         easyDraw = new EasyDraw(width, height);
         this.x = x;
         this.y = y;
         Message = message;
         AddChild(easyDraw);
-        //DrawText();
+        DrawText();
     }
+    private int numberOfLines()
+    {
 
-
-
+        var lines = Message.Split('\n');
+        return lines.Length;
+    }
     public void DrawText() {
         var _foo = new PrivateFontCollection();
         _foo.AddFontFile(fontFile);
 
-        easyDraw.TextFont(new Font(_foo.Families[0], fontSize));
-        easyDraw.rotation= textRotation;
+        easyDraw.TextFont(new Font(_foo.Families[0], 15));
         easyDraw.Fill(color.x, color.y,color.z);
-        easyDraw.Text(_message, 0, 2*fontSize);
+        easyDraw.Text(Message, 0, numberOfLines() *fontSize);
     }
 }
 
