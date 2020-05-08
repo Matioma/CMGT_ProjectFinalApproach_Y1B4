@@ -149,11 +149,10 @@ public class SceneManager : GameObject
             background.SetXY(game.width / 2, game.height / 2);
             sceneRef.AddChild(background);
 
-
-
+            //Build the puzzle
             var dictionary = new Dictionary<DraggableElement, Vec2>();
             List<PuzzleElement> puzzleElements = new List<PuzzleElement>();
-            //Build the puzzle
+            
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 4; j++) {
 
@@ -213,50 +212,63 @@ public class SceneManager : GameObject
     void CreateMainMenu() {
         AddLevel("MainMenu",
            (sceneRef) => {
-               var button = new Button("art/Button.jpg", 2, 1,
+               var background = new AnimationSprite("Art/MenuBG.png",1,1);
+               sceneRef.AddChild(background);
+
+               var imageLayer = new Sprite("Art/Menu text.png");
+               sceneRef.AddChild(imageLayer);
+
+
+               var button = new Button("art/transparent.png", 1, 1,
                   () =>
                   {
                       Instance.OpenScene("Scene1");
                   });
-               button.CreateText("Visit");
-               button.SetupText(() => {
-                   button.textobject.fontSize = 15;
-                   button.textobject.color = new Color3(0, 255, 0);
-                   button.textobject.textRotation = 0;
-               });
-               button.SetXY(250, 120);
+               //button.CreateText("Visit");
+               //button.SetupText(() => {
+               //    button.textobject.fontSize = 15;
+               //    button.textobject.color = new Color3(0, 255, 0);
+               //    button.textobject.textRotation = 0;
+               //});
+               button.SetXY(310, 150);
+               button.width = 280;
+               button.height = 120;
                sceneRef.AddChild(button);
 
 
 
-               button = new Button("art/Button.jpg", 2, 1,
+               button = new Button("art/transparent.png", 1, 1,
                     () =>
                     {
                         Instance.OpenScene("Gallery");
                     });
-               button.CreateText("Galary");
-               button.SetupText(() => {
-                   button.textobject.fontSize = 15;
-                   button.textobject.color = new Color3(0, 255, 0);
-                   button.textobject.textRotation = 0;
-               });
-               button.SetXY(250, 320);
+               //button.CreateText("Galary");
+               //button.SetupText(() => {
+               //    button.textobject.fontSize = 15;
+               //    button.textobject.color = new Color3(0, 255, 0);
+               //    button.textobject.textRotation = 0;
+               //});
+               button.SetXY(350, 330);
+               button.width = 280;
+               button.height = 120;
                sceneRef.AddChild(button);
 
 
 
-               button = new Button("art/Button.jpg", 2, 1,
+               button = new Button("art/transparent.png", 1, 1,
                    () =>
                    {
                        System.Diagnostics.Process.Start("https://www.vangoghmuseum.nl/"); //Opens the Link
                 });
-               button.CreateText("Museum");
-               button.SetupText(() => {
-                   button.textobject.fontSize = 15;
-                   button.textobject.color = new Color3(0, 255, 0);
-                   button.textobject.textRotation = 0;
-               });
-               button.SetXY(250, 520);
+               //button.CreateText("Museum");
+               //button.SetupText(() => {
+               //    button.textobject.fontSize = 15;
+               //    button.textobject.color = new Color3(0, 255, 0);
+               //    button.textobject.textRotation = 0;
+               //});
+               button.SetXY(310, 490);
+               button.width = 280;
+               button.height = 120;
                sceneRef.AddChild(button);
            });
     }
