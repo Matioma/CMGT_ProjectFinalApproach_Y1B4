@@ -473,7 +473,7 @@ public class SceneManager : GameObject
 
 
 
-            AddChild(puzzleGame);
+            sceneRef.AddChild(puzzleGame);
         });
     }
     void AddLevel(string Name , ActionBuilder sceneDataActions) {

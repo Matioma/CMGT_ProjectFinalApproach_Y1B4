@@ -16,8 +16,8 @@ class PuzzleElement:DraggableElement
     }
 
     public Puzzle FindPuzzleObject() {
-        foreach (var obj in SceneManager.Instance.GetChildren()) {
-            if (obj is Puzzle) {
+        foreach (var obj in SceneManager.Instance.CurrentLevel.GetChildren()) {
+            if (obj is Puzzle ) {
                 return obj as Puzzle;
             }
         }
@@ -46,7 +46,6 @@ class PuzzleElement:DraggableElement
             Vec2 puzzleElementPoz = new Vec2(x, y);
 
             Puzzle puzzleObject = FindPuzzleObject();
-
 
             if (puzzleObject.puzzleRelationships.ContainsKey(this))
             {
