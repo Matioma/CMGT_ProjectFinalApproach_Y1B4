@@ -73,7 +73,7 @@ public class Text : GameObject
 public class TextDialogBox : GameObject {
     EasyDraw easyDraw;
 
-    public string fontFile = "STENCIL.TTF";
+    public string fontFile = "LEVIBRUSH.TTF";
     public string Message = "Test";
     public Color3 color = new Color3(255, 0, 0);
     

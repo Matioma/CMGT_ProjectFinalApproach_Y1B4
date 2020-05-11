@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FinalApproach\AnimatedImage.cs" />
+    <Compile Include="FinalApproach\AudioManager.cs" />
     <Compile Include="FinalApproach\Buttons\HUDElement.cs" />
     <Compile Include="FinalApproach\Buttons\DraggableElement.cs" />
     <Compile Include="FinalApproach\Buttons\IInteractable.cs" />

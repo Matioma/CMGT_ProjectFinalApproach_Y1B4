@@ -25,6 +25,9 @@ public class TextBox:GameObject
     public TextBox(Button button):this(new Vec2(button.x-button.width/4, button.y-button.height/3),button.width,button.height) { 
     }
 
+    public TextBox(Button button, bool alignedLeft) : this(new Vec2(button.x - button.width / 2, button.y - button.height / 3), button.width, button.height)
+    {
+    }
     public void Configure(Action configuration) {
         if (configuration == null) {
             return;
