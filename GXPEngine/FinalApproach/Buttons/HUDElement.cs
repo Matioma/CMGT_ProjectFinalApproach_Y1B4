@@ -59,6 +59,10 @@ public abstract class HUDElement : AnimationSprite,IInteractable
 
     protected Action onClickAction;
 
+    public Action onHoverAction;
+    public Action onHoverEndAction;
+
+
     public HUDElement(string path, int cols, int rows) : base(path, cols, rows) {
         SetOrigin(width / 2, height / 2);
     }

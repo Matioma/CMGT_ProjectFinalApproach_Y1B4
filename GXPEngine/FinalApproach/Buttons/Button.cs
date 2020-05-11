@@ -38,9 +38,16 @@ class Button : HUDElement
         }
     }
     public override void OnHover() {
+        if (onHoverAction != null) {
+            onHoverAction.Invoke();
+        }
         SetFrame(1);
     }
     public override void OnHoverEnd() {
+        if (onHoverEndAction != null)
+        {
+            onHoverEndAction.Invoke();
+        }
         SetFrame(0);
     }
     public override void OnClickRelease()

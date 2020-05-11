@@ -7,15 +7,10 @@ using System.Text;
 using GXPEngine;
 class AnimatedImage : GameObject
 {
-    Dictionary<string, List<Sprite>> animations = new Dictionary<string, List<Sprite>>();
-    int currAnimFrame = 0;
-
     Dictionary<string, Animation> animationDictionary = new Dictionary<string, Animation>();
 
 
     string animationToPlay =null;
-
-
 
 
     List<Sprite> sprites = new List<Sprite>();
@@ -55,6 +50,10 @@ class AnimatedImage : GameObject
     public void PlayAnimation(string animationKey) {
         animationToPlay = animationKey;
     }
+
+    //public void StopAnimation() {
+    //    animationToPlay = null;
+    //}
  
 
 
