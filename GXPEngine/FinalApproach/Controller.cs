@@ -6,6 +6,8 @@ using System.Xml.XPath;
 using GXPEngine;
 
 
+
+
 public class Controller:GameObject
 {
     public static Controller Instance;
@@ -20,16 +22,71 @@ public class Controller:GameObject
     public HUDElement interactedElement = null;
 
 
+    Cursor currentCursor;
+    Cursor brushCursor;
+    Cursor handCursor;
+
+
+    public void SetCursor(CursorType cursorType) {
+        switch (cursorType) {
+            case CursorType.HAND:
+                brushCursor.alpha = 0;
+                handCursor.alpha = 1;
+                currentCursor = handCursor;
+                break;
+            case CursorType.BRUSH:
+                handCursor.alpha = 0;
+                brushCursor.alpha = 1;
+                currentCursor = brushCursor;
+                break;
+            default:
+                Console.WriteLine("unkown brush set in Controller in SetCursor methods");
+                break;
+        
+        }
+    
+    }
+
+    
+
+
+
     public Controller()
     {
         Instance = this;
-        //cursor = new Cursor(60,60,0);
-        cursor = new Cursor("Art/HandCursor.png", 1,2);
-        AddChild(cursor);
+        addCursors();
     }
+
+    void addCursors() {
+        brushCursor = new Cursor("Art/Brush_cursor.png", 2, 1);
+        brushCursor.SetCursor(0);
+        AddChild(brushCursor);
+        currentCursor = brushCursor;
+        handCursor = new Cursor("Art/HandCursor.png", 1, 2);
+        handCursor.SetCursor(1);
+        handCursor.alpha = 0;
+        AddChild(handCursor);
+    }
+
+    public void SwitchCursor() {
+        if (currentCursor == brushCursor)
+        {
+            currentCursor.alpha = 0;
+            currentCursor = handCursor;
+            currentCursor.alpha = 1;
+            
+        }
+        else
+        {
+            currentCursor.alpha = 0;
+            currentCursor = brushCursor;
+            currentCursor.alpha = 1;
+        }
+    }
+
     void Update()
     {
-        cursor.followMouse();
+        currentCursor.followMouse();
         CheckHoveredHudElements();
         InputToInteractedElement();
 
@@ -46,7 +103,7 @@ public class Controller:GameObject
         }
         if (Input.GetMouseButtonDown(0))
         {
-
+            currentCursor.SetCursor(1);
             interactedElement = hoveredObject;
             if (interactedElement != null) {
                 
@@ -55,6 +112,7 @@ public class Controller:GameObject
         }
         if (Input.GetMouseButtonUp(0))
         {
+            currentCursor.SetCursor(0);
             if (interactedElement != null)
             {
                 interactedElement.OnClickRelease();

@@ -93,78 +93,11 @@ public class SceneManager : GameObject
     void LoadLevel()
     {
         CreateMainMenu();
-
-        AddLevel("Scene1",
-            (sceneRef) => {
-                
-                var imageLayer = new AnimationSprite("art/Background1.png", 1, 1);
-                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
-                imageLayer.SetXY(game.width / 2, game.height / 2);
-                sceneRef.AddChild(imageLayer);
-
-                imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
-                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
-                imageLayer.SetXY(300, 450);
-                sceneRef.AddChild(imageLayer);
-
-                var character = new Character("art/vangoghpainting.png", 6, 1);
-                character.SetXY(300, 450);
-                sceneRef.AddChild(character);
-
-              
-
-                imageLayer = new AnimationSprite("art/ForeGround1.png", 1, 1);
-                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
-                imageLayer.SetXY(game.width / 2, game.height / 2);
-                sceneRef.AddChild(imageLayer);
-
-                var button = new Button("art/transparent.png", 1, 1,
-                    () =>
-                    {
-                        Instance.OpenScene("VisitVanGogh");
-                    });
-                button.width=120;
-                button.height=200;
-            
-                button.SetXY(350, game.height - 250);
-                sceneRef.AddChild(button);
-            });
-
-
-
-
         CreateGallery();
-        CreateLevel1();
-        CreatePuzzleLevel();
-    }
 
-    
-
-    private void CreatePuzzleLevel()
-    {
-        AddLevel("Puzzle", (sceneRef) =>
-        {
-            var puzzleGame = Puzzle.Create(sceneRef,"Art/Puzzles/puzzle1_start/", 3,2, new Vec2(20,153));
-            puzzleGame.OnPuzzleSolved = () =>
-            {
-                var button = new Button("art/Button.jpg", 2, 1,
-                 () =>
-                 {
-                     Instance.OpenScene("Gallery");
-                 });
-                button.CreateText("Gallery");
-                button.SetupText(() =>
-                {
-                    button.textobject.fontSize = 15;
-                    button.textobject.color = new Color3(0, 255, 0);
-                    button.textobject.textRotation = 0;
-                });
-                button.SetXY(game.width - 120, game.height - 60);
-                sceneRef.AddChild(button);
-                //Instance.OpenScene("Gallery");
-            };
-            AddChild(puzzleGame);
-        });
+        Scene1();
+        Scene2();
+        CreatePuzzle1Level();
     }
 
     void CreateMainMenu() {
@@ -186,6 +119,7 @@ public class SceneManager : GameObject
                   () =>
                   {
                       Instance.OpenScene("Scene1");
+                      Controller.Instance.SetCursor(CursorType.HAND);
                   });
                button.onHoverAction = () => {
                    foreach (var obj in Instance.CurrentLevel.GetChildren()) {
@@ -208,6 +142,7 @@ public class SceneManager : GameObject
                     () =>
                     {
                         Instance.OpenScene("Gallery");
+                        Controller.Instance.SetCursor(CursorType.HAND);
                     });
 
                button.onHoverAction = () => {
@@ -263,15 +198,52 @@ public class SceneManager : GameObject
                var button = new Button("art/Button.jpg", 2, 1,
                    () => {
                        Instance.OpenScene("MainMenu");
+                       Controller.Instance.SetCursor(CursorType.BRUSH);
+                       //Controller.Instance.SwitchCursor();
                    });
                button.CreateText("Random");
                button.SetXY(250, 120);
                sceneRef.AddChild(button);
            });
     }
-    void CreateLevel1()
+    private void Scene1()
     {
-        AddLevel("VisitVanGogh",
+        AddLevel("Scene1",
+            (sceneRef) =>
+            {
+                var imageLayer = new AnimationSprite("art/Background1.png", 1, 1);
+                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                imageLayer.SetXY(game.width / 2, game.height / 2);
+                sceneRef.AddChild(imageLayer);
+
+                imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
+                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                imageLayer.SetXY(300, 450);
+                sceneRef.AddChild(imageLayer);
+
+                var character = new Character("art/vangoghpainting.png", 6, 1);
+                character.SetXY(300, 450);
+                sceneRef.AddChild(character);
+
+                imageLayer = new AnimationSprite("art/ForeGround1.png", 1, 1);
+                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                imageLayer.SetXY(game.width / 2, game.height / 2);
+                sceneRef.AddChild(imageLayer);
+
+                var button = new Button("art/transparent.png", 1, 1,
+                    () =>
+                    {
+                        Instance.OpenScene("Scene2");
+                    });
+                button.width = 120;
+                button.height = 200;
+                button.SetXY(350, game.height - 250);
+                sceneRef.AddChild(button);
+            });
+    }
+    private void Scene2()
+    {
+        AddLevel("Scene2",
             (sceneRef) => {
                 var backgroundsample = new AnimationSprite("art/Background1.png", 1, 1);
                 backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
@@ -313,6 +285,7 @@ public class SceneManager : GameObject
                 var button = new Button("art/Button.jpg", 2, 1,
                     () => {
                         Instance.OpenScene("Puzzle");
+                        Controller.Instance.SetCursor(CursorType.BRUSH);
                     });
                 button.CreateText("Go");
                 button.SetupText(() => {
@@ -324,7 +297,33 @@ public class SceneManager : GameObject
                 sceneRef.AddChild(button);
         });
     }
-
+    private void CreatePuzzle1Level()
+    {
+        AddLevel("Puzzle", (sceneRef) =>
+        {
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle1_start/", 3, 2, new Vec2(20, 153));
+            puzzleGame.OnPuzzleSolved = () =>
+            {
+                var button = new Button("art/Button.jpg", 2, 1,
+                 () =>
+                 {
+                     Instance.OpenScene("Gallery");
+                     Controller.Instance.SetCursor(CursorType.HAND);
+                 });
+                button.CreateText("Gallery");
+                button.SetupText(() =>
+                {
+                    button.textobject.fontSize = 15;
+                    button.textobject.color = new Color3(0, 255, 0);
+                    button.textobject.textRotation = 0;
+                });
+                button.SetXY(game.width - 120, game.height - 60);
+                sceneRef.AddChild(button);
+                //Instance.OpenScene("Gallery");
+            };
+            AddChild(puzzleGame);
+        });
+    }
     void AddLevel(string Name , ActionBuilder sceneDataActions) {
         Scene scene = new Scene();
         sceneDataActions.Invoke(scene);
