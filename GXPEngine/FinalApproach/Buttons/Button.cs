@@ -6,7 +6,7 @@ using System.Text;
 using GXPEngine;
 
 
-class Button : HUDElement
+public class Button : HUDElement
 {
 
 

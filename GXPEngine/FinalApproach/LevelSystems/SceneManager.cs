@@ -239,6 +239,19 @@ public class SceneManager : GameObject
                 button.height = 200;
                 button.SetXY(350, game.height - 250);
                 sceneRef.AddChild(button);
+
+
+
+                //var textBox = new TextBox(new Vec2(280,120),300,300);
+                //textBox.Configure(() =>
+                //{
+                //    textBox.dialogBox.Message = "Here we go the first \nmessage that has to be\nwrapp around the dialog\nbox";
+                //    textBox.dialogBox.fontSize = 10;
+                //    textBox.dialogBox.color = new Color3(0, 0, 0);
+                //});
+                //textBox.EndConfigure();
+                //sceneRef.AddChild(textBox);
+
             });
     }
     private void Scene2()
@@ -265,37 +278,27 @@ public class SceneManager : GameObject
                 sceneRef.AddChild(foreGround);
 
 
-                var dialogBox = new TextDialogBox(" \n test \n test2 \n test2 \n test4", 500, 300, 300, 600);
-                sceneRef.AddChild(dialogBox);         
-    
-                var textBox = new Button("art/transparent.png", 1, 1,
-                () => {});
-                //textBox.CreateText("I have asdae \n test asdfasr sda \n sdf aer sdf ae \n test srseffa fase \n asdfaesf\n asdf sdfasdf\n");
-                //textBox.SetupText(() => {
-                //    textBox.textobject.fontSize = 10;
-                //    textBox.textobject.color = new Color3(0, 255, 0);
-                //    textBox.textobject.textRotation = 0;
-                //});
 
-                textBox.SetXY(650, game.height - 450);
-                sceneRef.AddChild(textBox);
-
-
-
-                var button = new Button("art/Button.jpg", 2, 1,
+                var button = new Button("art/Dialog Background.png", 1, 1,
                     () => {
                         Instance.OpenScene("Puzzle");
                         Controller.Instance.SetCursor(CursorType.BRUSH);
                     });
-                button.CreateText("Go");
-                button.SetupText(() => {
-                    button.textobject.fontSize = 15;
-                    button.textobject.color = new Color3(0, 255, 0);
-                    button.textobject.textRotation = 0;
-                });
+                button.SetScaleXY(0.5f, 0.5f);
                 button.SetXY(250, game.height - 120);
                 sceneRef.AddChild(button);
-        });
+
+                var dialogBox = new TextBox(button);
+                dialogBox.Configure(() =>
+                {
+                    dialogBox.dialogBox.Message = "What are you \ndrawing there? ";
+                    dialogBox.dialogBox.fontSize = 10;
+                    dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                });
+                dialogBox.EndConfigure();
+                sceneRef.AddChild(dialogBox);
+
+            });
     }
     private void CreatePuzzle1Level()
     {

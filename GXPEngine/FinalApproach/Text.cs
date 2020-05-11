@@ -33,6 +33,7 @@ public class Text : GameObject
         AddChild(easyDraw);
     }
 
+
     public void DrawText() {
         var _foo = new PrivateFontCollection();
         _foo.AddFontFile(fontFile);
@@ -69,7 +70,7 @@ public class Text : GameObject
 }
 
 
-class TextDialogBox : GameObject {
+public class TextDialogBox : GameObject {
     EasyDraw easyDraw;
 
     public string fontFile = "STENCIL.TTF";
@@ -81,17 +82,24 @@ class TextDialogBox : GameObject {
 
     public TextDialogBox(string message, int x, int y, int width, int height)
     {
-        
         easyDraw = new EasyDraw(width, height);
         this.x = x;
         this.y = y;
         Message = message;
         AddChild(easyDraw);
-        DrawText();
+        //DrawText();
     }
+    public TextDialogBox(int x, int y, int width, int height)
+    {
+        easyDraw = new EasyDraw(width, height);
+        this.x = x;
+        this.y = y;
+        AddChild(easyDraw);
+    }
+
+
     private int numberOfLines()
     {
-
         var lines = Message.Split('\n');
         return lines.Length;
     }
@@ -101,7 +109,7 @@ class TextDialogBox : GameObject {
 
         easyDraw.TextFont(new Font(_foo.Families[0], 15));
         easyDraw.Fill(color.x, color.y,color.z);
-        easyDraw.Text(Message, 0, numberOfLines() *fontSize);
+        easyDraw.Text(Message, 2*fontSize, (numberOfLines()+1)*2 *fontSize+2);
     }
 }
 
