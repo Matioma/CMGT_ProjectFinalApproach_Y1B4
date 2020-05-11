@@ -144,50 +144,7 @@ public class SceneManager : GameObject
     {
         AddLevel("Puzzle", (sceneRef) =>
         {
-            var background = new Sprite("Art/Puzzles/Puzzle1/puzzle1_background.png");
-            background.SetOrigin(background.width / 2, background.height / 2);
-            background.SetXY(game.width / 2, game.height / 2);
-            sceneRef.AddChild(background);
-
-            //Build the puzzle
-            var dictionary = new Dictionary<DraggableElement, Vec2>();
-            List<PuzzleElement> puzzleElements = new List<PuzzleElement>();
-            
-            for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < 4; j++) {
-
-                    string fileName = "Art/Puzzles/Puzzle1/" + (i * 4 + j + 1) + ".png";
-                    var test = new PuzzleElement(fileName, 1, 1);
-                    puzzleElements.Add(test);
-
-
-
-                    Vec2 realPosition = new Vec2();
-
-                    realPosition.x = 135 + test.width / 2 + test.width *j;
-                    realPosition.y = 80 + test.height / 2 + test.height*i+15;
-
-                    if (i == 1) {
-                        realPosition.y -= 20;
-                        if (j == 3) {
-                            realPosition.y -= 10;
-                        }
-                        if (j == 2)
-                        {
-                            realPosition.y -= 8;
-                        }
-
-                    }
-
-                    //test.SetXY(realPosition.x, realPosition.y);
-                    test.SetXY(random.Next(155, game.width - 155), random.Next(132, game.height - 132));
-                    dictionary.Add(test, realPosition);
-
-                    sceneRef.AddChild(test);
-                }
-            }
-            //Configure puzzle object
-            var puzzleGame = new Puzzle(dictionary);
+            var puzzleGame = Puzzle.Create(sceneRef,"Art/Puzzles/puzzle1_start/", 3,2, new Vec2(20,153));
             puzzleGame.OnPuzzleSolved = () =>
             {
                 var button = new Button("art/Button.jpg", 2, 1,
@@ -209,6 +166,7 @@ public class SceneManager : GameObject
             AddChild(puzzleGame);
         });
     }
+
     void CreateMainMenu() {
         AddLevel("MainMenu",
            (sceneRef) => {
@@ -219,7 +177,6 @@ public class SceneManager : GameObject
                backgroundImage.AddAnimation("Art/MainMenuAnimation/Bottom/frame", ".png", 16, "bottom");
                backgroundImage.AddAnimation("Art/MainMenuAnimation/Middle/frame", ".png", 18, "middle");
                backgroundImage.PlayAnimation("middle");
-               //backgroundImage.StopAnimation();
                sceneRef.AddChild(backgroundImage);
 
                var imageLayer = new Sprite("Art/Menu text.png");
