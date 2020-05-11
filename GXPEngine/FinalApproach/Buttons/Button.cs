@@ -29,13 +29,7 @@ class Button : HUDElement
     }
 
     public override void OnClick() {
-        if (onClickAction != null)
-        {
-            onClickAction.Invoke();
-        }
-        else {
-            Console.WriteLine("Default onClick action");
-        }
+      
     }
     public override void OnHover() {
         if (onHoverAction != null) {
@@ -52,6 +46,14 @@ class Button : HUDElement
     }
     public override void OnClickRelease()
     {
+        if (onClickAction != null)
+        {
+            onClickAction.Invoke();
+        }
+        else
+        {
+            Console.WriteLine("Default onClick action");
+        }
         //SceneManager.Instance.OpenScene(ButtonTarget);
     }
     public override void OnClickPressed()

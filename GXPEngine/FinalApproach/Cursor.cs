@@ -14,6 +14,12 @@ public class Cursor:AnimationSprite
     public Cursor():base(cursorsSpriteSheet, 2, 1) {
        
     }
+
+    public Cursor(string path,int cols, int rows,int width=120, int height=120):base(path,cols,rows) {
+        this.width = width;
+        this.height = height;
+    }
+
     public Cursor(int width, int height) : this() {
         this.width = width;
         this.height = height;

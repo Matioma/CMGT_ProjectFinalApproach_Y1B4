@@ -23,7 +23,8 @@ public class Controller:GameObject
     public Controller()
     {
         Instance = this;
-        cursor = new Cursor(60,60,0);
+        //cursor = new Cursor(60,60,0);
+        cursor = new Cursor("Art/HandCursor.png", 1,2);
         AddChild(cursor);
     }
     void Update()

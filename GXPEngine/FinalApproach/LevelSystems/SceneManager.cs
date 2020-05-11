@@ -170,8 +170,6 @@ public class SceneManager : GameObject
     void CreateMainMenu() {
         AddLevel("MainMenu",
            (sceneRef) => {
-               
-               
                var backgroundImage = new AnimatedImage();
                backgroundImage.AddAnimation("Art/MainMenuAnimation/Top/frame", ".png", 18, "top");
                backgroundImage.AddAnimation("Art/MainMenuAnimation/Bottom/frame", ".png", 16, "bottom");
@@ -182,6 +180,8 @@ public class SceneManager : GameObject
                var imageLayer = new Sprite("Art/Menu text.png");
                sceneRef.AddChild(imageLayer);
 
+
+               //Setup Start game button
                var button = new Button("art/transparent.png", 1, 1,
                   () =>
                   {
@@ -202,6 +202,8 @@ public class SceneManager : GameObject
 
 
 
+
+               //Setup gallary button
                button = new Button("art/transparent.png", 1, 1,
                     () =>
                     {
@@ -225,6 +227,8 @@ public class SceneManager : GameObject
 
 
 
+
+               // Setup museum button
                button = new Button("art/transparent.png", 1, 1,
                    () =>
                    {
