@@ -51,8 +51,6 @@ public class Text : GameObject
         easyDraw.Text(_message, easyDraw.width / 2 - (messsageLength / 2*fontSize), easyDraw.height/2+ fontSize);
     }
 
-
-
     public int MessageWidth() {
         
         var lines =_message.Split('\n');
@@ -80,11 +78,13 @@ public class TextDialogBox : GameObject {
     public float fontSize = 20;
 
     public Vec2 TextOffset = new Vec2();
+    public Vec2 Size { get;private set; }= new Vec2();
 
 
     public TextDialogBox(string message, int x, int y, int width, int height)
     {
         easyDraw = new EasyDraw(width, height);
+        Size.SetXY(width, height);
         this.x = x;
         this.y = y;
         Message = message;
@@ -97,6 +97,17 @@ public class TextDialogBox : GameObject {
         this.x = x;
         this.y = y;
         AddChild(easyDraw);
+    }
+
+    public TextDialogBox TextDialogCopy() {
+        TextDialogBox textDialogBox = new TextDialogBox("", (int)x, (int)y, easyDraw.width, easyDraw.height);
+        textDialogBox.fontFile = fontFile;
+        textDialogBox.Message = Message;
+        textDialogBox.color = color;
+        textDialogBox.fontSize = fontSize;
+        textDialogBox.TextOffset = TextOffset;
+
+        return textDialogBox;
     }
 
 

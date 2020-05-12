@@ -50,8 +50,9 @@
     <Compile Include="FinalApproach\Cursor.cs" />
     <Compile Include="FinalApproach\LevelSystems\Scene.cs" />
     <Compile Include="FinalApproach\LevelSystems\SceneManager.cs" />
-    <Compile Include="FinalApproach\Text.cs" />
-    <Compile Include="FinalApproach\TextBox.cs" />
+    <Compile Include="FinalApproach\PlayerStats.cs" />
+    <Compile Include="FinalApproach\HUD\Text.cs" />
+    <Compile Include="FinalApproach\HUD\TextBox.cs" />
     <Compile Include="FinalApproach\Utility\Color3.cs" />
     <Compile Include="FinalApproach\Utility\Vec2.cs" />
     <Compile Include="MyGame.cs" />

@@ -13,7 +13,7 @@ public class Controller:GameObject
     public static Controller Instance;
 
 
-
+    public PlayerStats stats;
     public readonly Cursor cursor;
 
     List<HUDElement> listOfHoveredObjects = new List<HUDElement>();
@@ -27,8 +27,17 @@ public class Controller:GameObject
     Cursor handCursor;
 
 
-    public void SetCursor(CursorType cursorType) {
-        switch (cursorType) {
+    public Controller()
+    {
+        Instance = this;
+        stats = new PlayerStats();
+        addCursors();
+    }
+
+    public void SetCursor(CursorType cursorType)
+    {
+        switch (cursorType)
+        {
             case CursorType.HAND:
                 brushCursor.alpha = 0;
                 handCursor.alpha = 1;
@@ -42,19 +51,9 @@ public class Controller:GameObject
             default:
                 Console.WriteLine("unkown brush set in Controller in SetCursor methods");
                 break;
-        
+
         }
-    
-    }
 
-    
-
-
-
-    public Controller()
-    {
-        Instance = this;
-        addCursors();
     }
 
     void addCursors() {
@@ -67,7 +66,6 @@ public class Controller:GameObject
         handCursor.alpha = 0;
         AddChild(handCursor);
     }
-
     public void SwitchCursor() {
         if (currentCursor == brushCursor)
         {

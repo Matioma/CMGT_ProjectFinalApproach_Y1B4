@@ -332,10 +332,6 @@ public class SceneManager : GameObject
                 //Van gogh text
                 var button = new Button("art/Dialog Background.png", 1, 1,
                    () => {
-                       //Instance.OpenScene("Puzzle");
-                       //Controller.Instance.SetCursor(CursorType.BRUSH);
-                       //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
-
                    });
                 button.SetScaleXY(0.8f, 0.8f);
                 button.SetXY(game.width - button.width / 2 - 20, game.height - 190);
@@ -406,16 +402,15 @@ public class SceneManager : GameObject
 
             });
     }
-
     private void Scene3()
     {
         AddLevel("Scene3",
                     (sceneRef) =>
                     {
-                        var backgroundsample = new AnimationSprite("art/Backgrounds/SunFlowers.png", 1, 1);
-                        backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
-                        backgroundsample.SetXY(game.width / 2, game.height / 2);
-                        sceneRef.AddChild(backgroundsample);
+                        var background = new AnimationSprite("art/Backgrounds/SunFlowers.png", 1, 1);
+                        background.SetOrigin(background.width / 2, background.height / 2);
+                        background.SetXY(game.width / 2, game.height / 2);
+                        sceneRef.AddChild(background);
 
 
                         var character = new Character("art/vangoghtalking.png", 3, 1);
@@ -581,9 +576,19 @@ public class SceneManager : GameObject
     {
         AddLevel("Puzzle", (sceneRef) =>
         {
+            TextBox scoreTextDialog = null;
+
             var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle1_start/", 2, 2, new Vec2(20, 153));
             puzzleGame.OnPuzzleSolved = () =>
             {
+                //SCore update
+                
+                Controller.Instance.stats.AddScore(1);
+                if(scoreTextDialog != null) { 
+                    scoreTextDialog.UpdateText(Controller.Instance.stats.Score.ToString());
+                }
+
+                //
                 AudioManager.Instance.PlaySound("VoiceoverLines/scene 3");
                 var button = new Button("art/Dialog Background.png", 1, 1,
                    () => {
@@ -607,10 +612,6 @@ public class SceneManager : GameObject
                 });
                 dialogBox.EndConfigure();
                 sceneRef.AddChild(dialogBox);
-
-
-
-             
             };
 
 
@@ -646,12 +647,13 @@ public class SceneManager : GameObject
             flowerCount.y += UIButton.height/2;
             flowerCount.Configure(() =>
             {
-                flowerCount.dialogBox.Message = "145";
+                flowerCount.dialogBox.Message = Controller.Instance.stats.Score.ToString();
                 flowerCount.dialogBox.fontSize = 10;
                 flowerCount.dialogBox.color = new Color3(255, 255, 255);
             });
             flowerCount.EndConfigure();
             sceneRef.AddChild(flowerCount);
+            scoreTextDialog = flowerCount;
 
 
 
