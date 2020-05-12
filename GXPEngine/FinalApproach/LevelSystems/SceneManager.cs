@@ -57,7 +57,7 @@ public class SceneManager : GameObject
         AudioManager audioManager = new AudioManager();
 
         LoadLevel();
-        OpenScene("MainMenu");
+        OpenScene("Puzzle");
     }
 
 
@@ -98,7 +98,6 @@ public class SceneManager : GameObject
 
        
     }
-
     public void OpenScene(Scene scene) {
         lastScene = CurrentLevel;
         RemoveChild(CurrentLevel);
@@ -117,8 +116,12 @@ public class SceneManager : GameObject
 
         Scene1();
         Scene2();
+        Scene3();
+        Scene4();
         CreatePuzzle1Level();
     }
+
+   
 
     void CreateMainMenu() {
         AddLevel("MainMenu",
@@ -403,6 +406,177 @@ public class SceneManager : GameObject
 
             });
     }
+
+    private void Scene3()
+    {
+        AddLevel("Scene3",
+                    (sceneRef) =>
+                    {
+                        var backgroundsample = new AnimationSprite("art/Backgrounds/SunFlowers.png", 1, 1);
+                        backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
+                        backgroundsample.SetXY(game.width / 2, game.height / 2);
+                        sceneRef.AddChild(backgroundsample);
+
+
+                        var character = new Character("art/vangoghtalking.png", 3, 1);
+                        character.SetXY(200, 400);
+                        sceneRef.AddChild(character);
+
+                       
+                        //Van gogh text
+                        var button = new Button("art/Dialog Background.png", 1, 1,
+                           () => {
+
+                        });
+                        button.SetScaleXY(0.8f, 1f);
+                        button.SetXY(game.width - button.width / 2 - 20, game.height - 190);
+                        sceneRef.AddChild(button);
+
+                        var dialogBox = new TextBox(button, true);
+                        dialogBox.y += 10;
+                        dialogBox.x += 50;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = "I was born on the 30 of March, 1853 in Zundert,The\nNetherlands and I was the eldest son of the Protestant\nclergyman Theodorus van Gogh and Anna Cornelia \nCarbentus.";
+                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.TextOffset = new Vec2(0, 10);
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+                        //Response
+                        button = new Button("art/Dialog Background.png", 1, 1,
+                            () => {
+                                Instance.OpenScene("Scene4");
+                                AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
+                                //Instance.OpenScene("Puzzle");
+                                //Controller.Instance.SetCursor(CursorType.BRUSH);
+                                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                            });
+                        button.SetScaleXY(0.5f, 0.5f);
+                        button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
+                        sceneRef.AddChild(button);
+
+                        dialogBox = new TextBox(button, true);
+                        dialogBox.y += 10;
+                        dialogBox.x += 85;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = "What happened next?";
+                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+
+                        //UI Buttons
+                        button = new Button("art/BackButton.png", 1, 1,
+                           () => {
+                               Instance.OpenScene("MainMenu");
+                               Controller.Instance.SetCursor(CursorType.BRUSH);
+                            });
+                        button.CreateText("Random");
+                        button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
+                        sceneRef.AddChild(button);
+
+
+                        button = new Button("art/Gallery.png", 1, 1,
+                           () => {
+                               Instance.OpenScene("Gallery");
+                               Controller.Instance.SetCursor(CursorType.HAND);
+                        });
+                        button.SetScaleXY(0.75f, 0.75f);
+                        button.SetXY(button.width / 2 - 15, button.height);
+                        sceneRef.AddChild(button);
+
+                    });
+    }
+    private void Scene4()
+    {
+        AddLevel("Scene4",
+                    (sceneRef) =>
+                    {
+                        var backgroundsample = new AnimationSprite("art/Backgrounds/SunFlowers.png", 1, 1);
+                        backgroundsample.SetOrigin(backgroundsample.width / 2, backgroundsample.height / 2);
+                        backgroundsample.SetXY(game.width / 2, game.height / 2);
+                        sceneRef.AddChild(backgroundsample);
+
+
+                        var character = new Character("art/vangoghtalking.png", 3, 1);
+                        character.SetXY(200, 400);
+                        sceneRef.AddChild(character);
+
+
+                        //Van gogh text
+                        var button = new Button("art/Dialog Background.png", 1, 1,
+                           () => {
+
+                           });
+                        button.SetScaleXY(0.8f, 1f);
+                        button.SetXY(game.width - button.width / 2 - 20, game.height - 190);
+                        sceneRef.AddChild(button);
+
+                        var dialogBox = new TextBox(button, true);
+                        dialogBox.y += 10;
+                        dialogBox.x += 50;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = "As a kid, I used to dream of becoming a pastor just like \nmy father. I was changing schools a lot and honestly I \nwasn't the best student, which led me to abandoning \nthat dream.";
+                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.TextOffset = new Vec2(0, 10);
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+                        //Response
+                        button = new Button("art/Dialog Background.png", 1, 1,
+                            () => {
+                                //Instance.OpenScene("Puzzle");
+                                //Controller.Instance.SetCursor(CursorType.BRUSH);
+                                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                            });
+                        button.SetScaleXY(0.5f, 0.5f);
+                        button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
+                        sceneRef.AddChild(button);
+
+                        dialogBox = new TextBox(button, true);
+                        dialogBox.y += 5;
+                        dialogBox.x += 15;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = "Sounds interesting! Tell me about \nyour school years.";
+                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+
+                        //UI Buttons
+                        button = new Button("art/BackButton.png", 1, 1,
+                           () => {
+                               Instance.OpenScene("MainMenu");
+                               Controller.Instance.SetCursor(CursorType.BRUSH);
+                           });
+                        button.CreateText("Random");
+                        button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
+                        sceneRef.AddChild(button);
+
+
+                        button = new Button("art/Gallery.png", 1, 1,
+                           () => {
+                               Instance.OpenScene("Gallery");
+                               Controller.Instance.SetCursor(CursorType.HAND);
+                           });
+                        button.SetScaleXY(0.75f, 0.75f);
+                        button.SetXY(button.width / 2 - 15, button.height);
+                        sceneRef.AddChild(button);
+
+                    });
+    }
     private void CreatePuzzle1Level()
     {
         AddLevel("Puzzle", (sceneRef) =>
@@ -411,21 +585,23 @@ public class SceneManager : GameObject
             puzzleGame.OnPuzzleSolved = () =>
             {
                 AudioManager.Instance.PlaySound("VoiceoverLines/scene 3");
-
                 var button = new Button("art/Dialog Background.png", 1, 1,
                    () => {
-                       Instance.OpenScene("Gallery");
+                       AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
+                       Instance.OpenScene("Scene3");
                        Controller.Instance.SetCursor(CursorType.HAND);
 
                    });
                 button.SetScaleXY(0.5f, 0.5f);
-                button.SetXY(game.width - 120, game.height - 60);
+                button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
                 sceneRef.AddChild(button);
 
-                var dialogBox = new TextBox(button);
+                var dialogBox = new TextBox(button,true);
+                dialogBox.x += 50;
+                dialogBox.y += 10;
                 dialogBox.Configure(() =>
                 {
-                    dialogBox.dialogBox.Message = "What are you \ndrawing there? ";
+                    dialogBox.dialogBox.Message = "Amazing, tell me more about you!";
                     dialogBox.dialogBox.fontSize = 10;
                     dialogBox.dialogBox.color = new Color3(0, 0, 0);
                 });

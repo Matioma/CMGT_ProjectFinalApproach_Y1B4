@@ -79,6 +79,8 @@ public class TextDialogBox : GameObject {
     
     public float fontSize = 20;
 
+    public Vec2 TextOffset = new Vec2();
+
 
     public TextDialogBox(string message, int x, int y, int width, int height)
     {
@@ -109,7 +111,7 @@ public class TextDialogBox : GameObject {
 
         easyDraw.TextFont(new Font(_foo.Families[0], 15));
         easyDraw.Fill(color.x, color.y,color.z);
-        easyDraw.Text(Message, 2*fontSize, (numberOfLines()+1)*2 *fontSize+2);
+        easyDraw.Text(Message, 2*fontSize+TextOffset.x, (numberOfLines()+1)*2 *fontSize+2+ TextOffset.y);
     }
 }
 
