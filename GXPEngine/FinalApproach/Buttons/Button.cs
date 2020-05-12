@@ -23,7 +23,7 @@ public class Button : HUDElement
     /// <param name="cols">number of columns</param>
     /// <param name="rows">number of rows</param>
     /// <param name="onClickAction">Actions should take place</param>
-    public Button(string path, int cols, int rows, Action onClickAction) : this(path, cols, rows)
+    public Button(string path, int cols, int rows, Action onClickAction=null) : this(path, cols, rows)
     {
         this.onClickAction += onClickAction;
     }

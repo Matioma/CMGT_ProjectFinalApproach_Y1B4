@@ -65,7 +65,7 @@ public class SceneManager : GameObject
 
         
         LoadLevels();
-        OpenScene(SceneType.MainMenu);
+        OpenScene(SceneType.Puzzle1);
         
     }
 
@@ -566,8 +566,55 @@ public class SceneManager : GameObject
                 });
                 dialogBox.EndConfigure();
                 sceneRef.AddChild(dialogBox);
+
+
+                ///
+                ///Adding temporary dialog boxes
+                ///
+                sceneRef.RemoveTemporaryObjects();
+                button = new Button("art/Dialog Background.png", 1, 1);
+                button.SetScaleXY(0.7f, 0.7f);
+                button.SetXY(button.width / 2, game.height - button.height / 2);
+                sceneRef.AddChild(button);
+
+                dialogBox = new TextBox(button, true);
+                dialogBox.y += 10;
+                dialogBox.x += 10;
+                dialogBox.Configure(() =>
+                {
+                    dialogBox.dialogBox.Message = "You are doing great, young artist!With common forces\nwe made it through half of the painting. Maybe you can \ncheck it out laterto help me finish?";
+                    dialogBox.dialogBox.fontSize = 10;
+                    dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                });
+                dialogBox.EndConfigure();
+                sceneRef.AddTemporaryObject(button);
+                sceneRef.AddTemporaryObject(dialogBox);
             };
             sceneRef.AddChild(puzzleGame);
+
+
+
+            ///
+            ///Adding temporary dialog boxes
+            ///
+            var TextMessageButton = new Button("art/Dialog Background.png", 1, 1);
+            TextMessageButton.SetScaleXY(0.7f, 0.7f);
+            TextMessageButton.SetXY(TextMessageButton.width / 2 , game.height - TextMessageButton.height/2);
+            sceneRef.AddChild(TextMessageButton);
+
+            var tempDialogBox = new TextBox(TextMessageButton, true);
+            tempDialogBox.y += 10;
+            tempDialogBox.x += 10;
+            tempDialogBox.Configure(() =>
+            {
+                tempDialogBox.dialogBox.Message = "That? ... That is going to be my last painting, \nchild. I should be done with it by the end of the tour";
+                tempDialogBox.dialogBox.fontSize = 10;
+                tempDialogBox.dialogBox.color = new Color3(0, 0, 0);
+            });
+            tempDialogBox.EndConfigure();
+            sceneRef.AddTemporaryObject(TextMessageButton);
+            sceneRef.AddTemporaryObject(tempDialogBox);
+
 
             //UI Buttons
             AddBackButton(sceneRef);
@@ -577,7 +624,7 @@ public class SceneManager : GameObject
 
             sceneRef.OnSceneOpen = () =>
             {
-                AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
+                AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
                 Controller.Instance.SetCursor(CursorType.BRUSH);
                 AudioManager.Instance.ReduceVolume(0.1f);
             };
