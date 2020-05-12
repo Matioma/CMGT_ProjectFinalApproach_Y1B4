@@ -2,6 +2,17 @@
 using GXPEngine.FinalApproach;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+
+public enum SceneType { 
+    MainMenu,
+    Gallery,
+    Scene1,
+    Scene2,
+    Scene3,
+    Scene4,
+    Puzzle1
+}
 
 public class SceneManager : GameObject
 {
@@ -38,78 +49,55 @@ public class SceneManager : GameObject
             OpenScene(lastScene);
         }
     }
+    Dictionary<SceneType, Scene> scenesDictionary = new Dictionary<SceneType, Scene>();
 
-
-    //Scene Manager Fields
-    List<Scene> scenes=new List<Scene>();
-    Dictionary<string,Scene> levels= new Dictionary<string,Scene>();
     public Scene CurrentLevel { get; private set; } = null;
 
     private  Controller controller;
-
-
-    Random random = new Random();
+    readonly Random random = new Random();
     public SceneManager() {
         Instance = this;
         controller = new Controller();
         AddChild(controller);
 
         AudioManager audioManager = new AudioManager();
+        AddChild(audioManager);
 
-        LoadLevel();
-        OpenScene("Puzzle");
+        
+        LoadLevels();
+        OpenScene(SceneType.MainMenu);
+        
     }
 
 
-    /// <summary>
-    /// Opens the level
-    /// </summary>
-    /// <param name="index"></param>
-    public void OpenScene(int index) {
-        if (index >= 0 && index < scenes.Count)
-        {
-            if (CurrentLevel != null)
-            {
-                lastScene = CurrentLevel;
-                RemoveChild(CurrentLevel);
-            }
-            CurrentLevel = scenes[index];
-            AddChildAt(CurrentLevel,0);
-        }
-        else {
-            Console.WriteLine("Index out of bounds when Openning scene in SceneManager");
-        }
-    }
-    public void OpenScene(string key)
-    {
-        if (CurrentLevel != null)
-        {
-            lastScene = CurrentLevel;
-            RemoveChild(CurrentLevel);
-        }
-        if (levels.ContainsKey(key))
-        {
-            CurrentLevel = levels[key];
-            AddChildAt(CurrentLevel, 0);
-        }
-        else {
-            Console.WriteLine("Filed to load Key");
-        }
-
-       
-    }
     public void OpenScene(Scene scene) {
+     
         lastScene = CurrentLevel;
         RemoveChild(CurrentLevel);
         CurrentLevel = scene;
         AddChildAt(CurrentLevel, 0);
     }
 
+    public void OpenScene(SceneType sceneType) {
+        if (CurrentLevel != null)
+        {
+            lastScene = CurrentLevel;
+            RemoveChild(CurrentLevel);
+        }
+        if (scenesDictionary.ContainsKey(sceneType))
+        {
+            CurrentLevel = scenesDictionary[sceneType];
+            AddChildAt(CurrentLevel, 0);
+        }
+        else {
+            Console.WriteLine("Undefined Scene");
+        }
 
-    /// <summary>
-    /// Creates the scenes
-    /// </summary>
-    void LoadLevel()
+        if (CurrentLevel.OnSceneOpen != null) {
+            CurrentLevel.OnSceneOpen.Invoke();
+        }
+    }
+    void LoadLevels()
     {
         CreateMainMenu();
         CreateGallery();
@@ -121,10 +109,8 @@ public class SceneManager : GameObject
         CreatePuzzle1Level();
     }
 
-   
-
     void CreateMainMenu() {
-        AddLevel("MainMenu",
+        AddLevel(SceneType.MainMenu,
            (sceneRef) => {
                var backgroundImage = new AnimatedImage();
                backgroundImage.AddAnimation("Art/MainMenuAnimation/Top/frame", ".png", 18, "top");
@@ -141,13 +127,18 @@ public class SceneManager : GameObject
                var button = new Button("art/transparent.png", 1, 1,
                   () =>
                   {
-                      Instance.OpenScene("Scene1");
+                      AudioManager.Instance.StopSounds();
+                      AudioManager.Instance.AddEnvironementSound("Environment/7 wheatfield with crows");
+                      //Instance.OpenScene("Scene1");
+                      Instance.OpenScene(SceneType.Scene1);
                       Controller.Instance.SetCursor(CursorType.HAND);
                   });
                button.onHoverAction = () => {
-                   foreach (var obj in Instance.CurrentLevel.GetChildren()) {
-                       if (obj is AnimatedImage) {
-                           var background =obj as AnimatedImage;
+                   foreach (var obj in Instance.CurrentLevel.GetChildren())
+                   {
+                       if (obj is AnimatedImage)
+                       {
+                           var background = obj as AnimatedImage;
                            background.PlayAnimation("top");
                        }
                    }
@@ -158,14 +149,12 @@ public class SceneManager : GameObject
                sceneRef.AddChild(button);
 
 
-
-
                //Setup gallary button
                button = new Button("art/transparent.png", 1, 1,
                     () =>
                     {
-                        Instance.OpenScene("Gallery");
-                        Controller.Instance.SetCursor(CursorType.HAND);
+                        Instance.OpenScene(SceneType.Gallery);
+                        //Controller.Instance.SetCursor(CursorType.HAND);
                     });
 
                button.onHoverAction = () => {
@@ -191,7 +180,7 @@ public class SceneManager : GameObject
                    () =>
                    {
                        System.Diagnostics.Process.Start("https://www.vangoghmuseum.nl/"); //Opens the Link
-                });
+                   });
 
                button.onHoverAction = () => {
                    foreach (var obj in Instance.CurrentLevel.GetChildren())
@@ -207,31 +196,48 @@ public class SceneManager : GameObject
                button.width = 280;
                button.height = 120;
                sceneRef.AddChild(button);
+
+
+               sceneRef.OnSceneOpen = () =>
+               {
+                   Controller.Instance.SetCursor(CursorType.BRUSH);
+                   AudioManager.Instance.StopSounds();
+                   AudioManager.Instance.AddEnvironementSound("Environment/Menu screen", ".mp3");
+               };
            });
     }
     void CreateGallery()
     {
-        AddLevel("Gallery",
-           (sceneRef) => {
-               var draggableElement = new DraggableElement("art/MuseumMap.png", 1, 1);
-               draggableElement.width *= 2;
-               draggableElement.height *= 2;
-               sceneRef.AddChild(draggableElement);
+        
+        AddLevel(SceneType.Gallery,
+          (sceneRef) => {
+              var museumMap = new MuseumMap("art/MuseumMap.png", 1, 1);
+              museumMap.width *= 2;
+              museumMap.height *= 2;
+              sceneRef.AddChild(museumMap);
 
-               var button = new Button("art/BackButton.png", 1, 1,
-                   () => {
-                       Instance.OpenLastScene();
-                       Controller.Instance.SetCursor(CursorType.BRUSH);
-                       //Controller.Instance.SwitchCursor();
-                   });
-               button.CreateText("Random");
-               button.SetXY(button.width/2-30, button.height/2-30);
-               sceneRef.AddChild(button);
-           });
+
+              var painting = new MuseumPainting("Art/OriginalImages/painting1.png", 2, 1);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.1f, 0.1f);
+              painting.SetXY(95, 155);
+              museumMap.AddPainting(painting);
+
+              AddBackButton(sceneRef);
+
+
+              sceneRef.OnSceneOpen = () =>
+              {
+                  Controller.Instance.SetCursor(CursorType.HAND);
+              };
+
+          });
+
+
     }
     private void Scene1()
     {
-        AddLevel("Scene1",
+        AddLevel(SceneType.Scene1,
             (sceneRef) =>
             {
                 var imageLayer = new AnimationSprite("art/Background1.png", 1, 1);
@@ -239,14 +245,29 @@ public class SceneManager : GameObject
                 imageLayer.SetXY(game.width / 2, game.height / 2);
                 sceneRef.AddChild(imageLayer);
 
+
+
                 imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
                 imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
                 imageLayer.SetXY(300, 450);
                 sceneRef.AddChild(imageLayer);
 
+
+                imageLayer = new AnimationSprite("art/Background1.png", 1, 1);
+                imageLayer.SetScaleXY(0.25f, 0.25f);
+                imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                imageLayer.SetXY(220, 350);
+                sceneRef.AddChild(imageLayer);
+
+
                 var character = new Character("art/vangoghpainting.png", 6, 1);
                 character.SetXY(300, 450);
                 sceneRef.AddChild(character);
+
+                var handHelper = new Character("art/HandCursor.png", 1, 2);
+                handHelper.SetScaleXY(0.8f, 0.8f);
+                handHelper.SetXY(400, 500);
+                sceneRef.AddChild(handHelper);
 
                 imageLayer = new AnimationSprite("art/ForeGround1.png", 1, 1);
                 imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
@@ -256,7 +277,7 @@ public class SceneManager : GameObject
                 var button = new Button("art/transparent.png", 1, 1,
                     () =>
                     {
-                        Instance.OpenScene("Scene2");
+                        Instance.OpenScene(SceneType.Scene2);
                         AudioManager.Instance.PlaySound("VoiceoverLines/scene 1");
                     });
                 button.width = 120;
@@ -264,47 +285,21 @@ public class SceneManager : GameObject
                 button.SetXY(350, game.height - 250);
                 sceneRef.AddChild(button);
 
-
-
-
                 //UI Buttons
-                button = new Button("art/BackButton.png", 1, 1,
-                   () => {
-                       Instance.OpenScene("MainMenu");
-                       Controller.Instance.SetCursor(CursorType.HAND);
-                       //Controller.Instance.SwitchCursor();
-                   });
-                button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
-                sceneRef.AddChild(button);
+                AddBackButton(sceneRef);
+                AddGallaryButton(sceneRef);
 
-
-                button = new Button("art/Gallery.png", 1, 1,
-                   () => {
-                       Instance.OpenScene("Gallery");
-                       Controller.Instance.SetCursor(CursorType.HAND);
-                       //Controller.Instance.SwitchCursor();
-                   });
-                button.SetScaleXY(0.75f, 0.75f);
-                button.SetXY(button.width / 2 - 15, button.height);
-                sceneRef.AddChild(button);
-
-
-
-                //var textBox = new TextBox(new Vec2(280,120),300,300);
-                //textBox.Configure(() =>
-                //{
-                //    textBox.dialogBox.Message = "Here we go the first \nmessage that has to be\nwrapp around the dialog\nbox";
-                //    textBox.dialogBox.fontSize = 10;
-                //    textBox.dialogBox.color = new Color3(0, 0, 0);
-                //});
-                //textBox.EndConfigure();
-                //sceneRef.AddChild(textBox);
+                sceneRef.OnSceneOpen = () =>
+                {
+                    Controller.Instance.SetCursor(CursorType.HAND);
+                };
 
             });
     }
     private void Scene2()
     {
-        AddLevel("Scene2",
+        
+        AddLevel(SceneType.Scene2,
             (sceneRef) => {
                 Sound sound = new Sound("Audio/VoiceoverLines/scene 1.wav");
 
@@ -337,7 +332,7 @@ public class SceneManager : GameObject
                 button.SetXY(game.width - button.width / 2 - 20, game.height - 190);
                 sceneRef.AddChild(button);
 
-                var dialogBox = new TextBox(button,true);
+                var dialogBox = new TextBox(button, true);
                 dialogBox.y += 20;
                 dialogBox.x += 50;
                 dialogBox.Configure(() =>
@@ -349,23 +344,20 @@ public class SceneManager : GameObject
                 dialogBox.EndConfigure();
                 sceneRef.AddChild(dialogBox);
 
-
-
-
-
                 //Response
                 button = new Button("art/Dialog Background.png", 1, 1,
                     () => {
-                        Instance.OpenScene("Puzzle");
+                        Instance.OpenScene(SceneType.Puzzle1);
+                        //Instance.OpenScene("Puzzle");
                         Controller.Instance.SetCursor(CursorType.BRUSH);
                         AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
-                        
+
                     });
                 button.SetScaleXY(0.5f, 0.5f);
-                button.SetXY(game.width-button.width/2-30, game.height - 70);
+                button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
                 sceneRef.AddChild(button);
 
-                dialogBox = new TextBox(button,true);
+                dialogBox = new TextBox(button, true);
                 dialogBox.y += 10;
                 dialogBox.x += 50;
                 dialogBox.Configure(() =>
@@ -379,32 +371,18 @@ public class SceneManager : GameObject
 
 
                 //UI Buttons
-                button = new Button("art/BackButton.png", 1, 1,
-                   () => {
-                       Instance.OpenScene("MainMenu");
-                       Controller.Instance.SetCursor(CursorType.BRUSH);
-                       //Controller.Instance.SwitchCursor();
-                   });
-                button.CreateText("Random");
-                button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
-                sceneRef.AddChild(button);
+                AddBackButton(sceneRef);
+                AddGallaryButton(sceneRef);
 
-
-                button = new Button("art/Gallery.png", 1, 1,
-                   () => {
-                       Instance.OpenScene("Gallery");
-                       Controller.Instance.SetCursor(CursorType.HAND);
-                       //Controller.Instance.SwitchCursor();
-                   });
-                button.SetScaleXY(0.75f, 0.75f);
-                button.SetXY(button.width / 2 - 15, button.height);
-                sceneRef.AddChild(button);
-
+                sceneRef.OnSceneOpen = () =>
+                {
+                    Controller.Instance.SetCursor(CursorType.HAND);
+                };
             });
     }
     private void Scene3()
     {
-        AddLevel("Scene3",
+        AddLevel(SceneType.Scene3,
                     (sceneRef) =>
                     {
                         var background = new AnimationSprite("art/Backgrounds/SunFlowers.png", 1, 1);
@@ -443,11 +421,8 @@ public class SceneManager : GameObject
                         //Response
                         button = new Button("art/Dialog Background.png", 1, 1,
                             () => {
-                                Instance.OpenScene("Scene4");
-                                AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
-                                //Instance.OpenScene("Puzzle");
-                                //Controller.Instance.SetCursor(CursorType.BRUSH);
-                                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                                Instance.OpenScene(SceneType.Scene4);
+                                
                             });
                         button.SetScaleXY(0.5f, 0.5f);
                         button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
@@ -466,31 +441,22 @@ public class SceneManager : GameObject
                         sceneRef.AddChild(dialogBox);
 
 
-                        //UI Buttons
-                        button = new Button("art/BackButton.png", 1, 1,
-                           () => {
-                               Instance.OpenScene("MainMenu");
-                               Controller.Instance.SetCursor(CursorType.BRUSH);
-                            });
-                        button.CreateText("Random");
-                        button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
-                        sceneRef.AddChild(button);
+                        //UI Buttons  
+                        AddBackButton(sceneRef);
 
 
-                        button = new Button("art/Gallery.png", 1, 1,
-                           () => {
-                               Instance.OpenScene("Gallery");
-                               Controller.Instance.SetCursor(CursorType.HAND);
-                        });
-                        button.SetScaleXY(0.75f, 0.75f);
-                        button.SetXY(button.width / 2 - 15, button.height);
-                        sceneRef.AddChild(button);
+                        AddGallaryButton(sceneRef);
 
+                        sceneRef.OnSceneOpen = () =>
+                        {
+                            Controller.Instance.SetCursor(CursorType.HAND);
+                            AudioManager.Instance.StopSounds();
+                        };
                     });
     }
     private void Scene4()
     {
-        AddLevel("Scene4",
+        AddLevel(SceneType.Scene4,
                     (sceneRef) =>
                     {
                         var backgroundsample = new AnimationSprite("art/Backgrounds/SunFlowers.png", 1, 1);
@@ -529,9 +495,7 @@ public class SceneManager : GameObject
                         //Response
                         button = new Button("art/Dialog Background.png", 1, 1,
                             () => {
-                                //Instance.OpenScene("Puzzle");
-                                //Controller.Instance.SetCursor(CursorType.BRUSH);
-                                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+
                             });
                         button.SetScaleXY(0.5f, 0.5f);
                         button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
@@ -551,40 +515,28 @@ public class SceneManager : GameObject
 
 
                         //UI Buttons
-                        button = new Button("art/BackButton.png", 1, 1,
-                           () => {
-                               Instance.OpenScene("MainMenu");
-                               Controller.Instance.SetCursor(CursorType.BRUSH);
-                           });
-                        button.CreateText("Random");
-                        button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
-                        sceneRef.AddChild(button);
+                        AddBackButton(sceneRef);
+                        AddGallaryButton(sceneRef);
 
 
-                        button = new Button("art/Gallery.png", 1, 1,
-                           () => {
-                               Instance.OpenScene("Gallery");
-                               Controller.Instance.SetCursor(CursorType.HAND);
-                           });
-                        button.SetScaleXY(0.75f, 0.75f);
-                        button.SetXY(button.width / 2 - 15, button.height);
-                        sceneRef.AddChild(button);
-
+                        sceneRef.OnSceneOpen = () =>
+                        {
+                            Controller.Instance.SetCursor(CursorType.HAND);
+                        };
                     });
     }
     private void CreatePuzzle1Level()
     {
-        AddLevel("Puzzle", (sceneRef) =>
+        AddLevel(SceneType.Puzzle1, (sceneRef) =>
         {
             TextBox scoreTextDialog = null;
 
             var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle1_start/", 2, 2, new Vec2(20, 153));
             puzzleGame.OnPuzzleSolved = () =>
             {
-                //SCore update
-                
                 Controller.Instance.stats.AddScore(1);
-                if(scoreTextDialog != null) { 
+                if (scoreTextDialog != null)
+                {
                     scoreTextDialog.UpdateText(Controller.Instance.stats.Score.ToString());
                 }
 
@@ -593,7 +545,9 @@ public class SceneManager : GameObject
                 var button = new Button("art/Dialog Background.png", 1, 1,
                    () => {
                        AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
-                       Instance.OpenScene("Scene3");
+                       Instance.OpenScene(SceneType.Scene3);
+                       
+                       //Instance.OpenScene("Scene3");
                        Controller.Instance.SetCursor(CursorType.HAND);
 
                    });
@@ -601,7 +555,7 @@ public class SceneManager : GameObject
                 button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
                 sceneRef.AddChild(button);
 
-                var dialogBox = new TextBox(button,true);
+                var dialogBox = new TextBox(button, true);
                 dialogBox.x += 50;
                 dialogBox.y += 10;
                 dialogBox.Configure(() =>
@@ -613,70 +567,92 @@ public class SceneManager : GameObject
                 dialogBox.EndConfigure();
                 sceneRef.AddChild(dialogBox);
             };
-
+            sceneRef.AddChild(puzzleGame);
 
             //UI Buttons
-            var UIButton = new Button("art/BackButton.png", 1, 1,
-               () => {
-                   Instance.OpenScene("MainMenu");
-                   Controller.Instance.SetCursor(CursorType.BRUSH);
-                   });
-            UIButton.CreateText("Random");
-            UIButton.SetXY(UIButton.width / 2 - 30, UIButton.height / 2 - 30);
-            sceneRef.AddChild(UIButton);
+            AddBackButton(sceneRef);
+            AddGallaryButtonPuzzle(sceneRef);
+            scoreTextDialog = AddSunflowerTextBox(sceneRef);
 
 
-            UIButton = new Button("art/Gallery.png", 1, 1,
-               () => {
-                   Instance.OpenScene("Gallery");
-                   Controller.Instance.SetCursor(CursorType.HAND);
-                   });
-            UIButton.SetScaleXY(0.75f, 0.75f);
-            UIButton.SetXY(UIButton.width+20, UIButton.height / 2 - 23);
-            sceneRef.AddChild(UIButton);
-
-            //
-            UIButton = new Button("art/SunFlowerBG.png", 1, 1,
-               () => {
-               });
-            UIButton.SetScaleXY(0.75f, 0.75f);
-            UIButton.SetXY(game.width -UIButton.width/2, UIButton.height / 2 - 23);
-            sceneRef.AddChild(UIButton);
-
-            var flowerCount = new TextBox(UIButton);
-            flowerCount.y += UIButton.height/2;
-            flowerCount.Configure(() =>
+            sceneRef.OnSceneOpen = () =>
             {
-                flowerCount.dialogBox.Message = Controller.Instance.stats.Score.ToString();
-                flowerCount.dialogBox.fontSize = 10;
-                flowerCount.dialogBox.color = new Color3(255, 255, 255);
-            });
-            flowerCount.EndConfigure();
-            sceneRef.AddChild(flowerCount);
-            scoreTextDialog = flowerCount;
-
-
-
-
-            //
-            UIButton = new Button("art/SunFlower.png", 1, 1,
-               () => {
-               });
-            UIButton.SetScaleXY(0.75f, 0.75f);
-            UIButton.SetXY(game.width - UIButton.width / 2 -50, UIButton.height / 2 +20);
-            sceneRef.AddChild(UIButton);
-
-
-
-            sceneRef.AddChild(puzzleGame);
+                AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
+                Controller.Instance.SetCursor(CursorType.BRUSH);
+                AudioManager.Instance.ReduceVolume(0.1f);
+            };
         });
     }
-    void AddLevel(string Name , ActionBuilder sceneDataActions) {
+
+    void AddBackButton(Scene scene)
+    {
+        var button = new Button("art/BackButton.png", 1, 1,
+                   () => {
+                       Instance.OpenScene(SceneType.MainMenu);
+                   });
+        button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
+        scene.AddChild(button);
+
+    }
+    void AddGallaryButton(Scene scene) {
+        var button = new Button("art/Gallery.png", 1, 1,
+           () => {
+               Instance.OpenScene(SceneType.Gallery);
+           });
+        button.SetScaleXY(0.75f, 0.75f);
+        button.SetXY(button.width / 2 - 15, button.height);
+        scene.AddChild(button);
+    }
+    void AddGallaryButtonPuzzle(Scene scene)
+    {
+        var button = new Button("art/Gallery.png", 1, 1,
+           () => {
+               Instance.OpenScene(SceneType.Gallery);
+           });
+        button.SetScaleXY(0.75f, 0.75f);
+        button.SetXY(button.width + 20, button.height / 2 - 20);
+        scene.AddChild(button);
+    }
+
+    TextBox AddSunflowerTextBox(Scene scene) {
+        TextBox textBoxToReturn = null;
+
+        var UIButton = new Button("art/SunFlowerBG.png", 1, 1,
+           () => {
+           });
+        UIButton.SetScaleXY(0.75f, 0.75f);
+        UIButton.SetXY(game.width - UIButton.width / 2, UIButton.height / 2 - 23);
+        scene.AddChild(UIButton);
+
+        var flowerCount = new TextBox(UIButton);
+        flowerCount.y += UIButton.height / 2;
+        flowerCount.Configure(() =>
+        {
+            flowerCount.dialogBox.Message = Controller.Instance.stats.Score.ToString();
+            flowerCount.dialogBox.fontSize = 10;
+            flowerCount.dialogBox.color = new Color3(255, 255, 255);
+        });
+        flowerCount.EndConfigure();
+        scene.AddChild(flowerCount);
+        textBoxToReturn = flowerCount;
+
+
+        UIButton = new Button("art/SunFlower.png", 1, 1,
+           () => {
+           });
+        UIButton.SetScaleXY(0.75f, 0.75f);
+        UIButton.SetXY(game.width - UIButton.width / 2 - 50, UIButton.height / 2 + 20);
+        scene.AddChild(UIButton);
+
+        return textBoxToReturn;
+    }
+
+    void AddLevel(SceneType sceneType, ActionBuilder sceneDataActions)
+    {
         Scene scene = new Scene();
         sceneDataActions.Invoke(scene);
 
-        levels.Add(Name, scene);
-        scenes.Add(scene);
+        scenesDictionary.Add(sceneType, scene);
     }
 
 

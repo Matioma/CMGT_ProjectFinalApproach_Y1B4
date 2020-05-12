@@ -46,8 +46,8 @@ public class Button : HUDElement
     }
     public override void OnClickRelease()
     {
-        if (AudioManager.Instance.currentSoundChannel != null) { 
-            if (AudioManager.Instance.currentSoundChannel.IsPlaying)
+        if (AudioManager.Instance.NarratorSoundChannel != null) { 
+            if (AudioManager.Instance.NarratorSoundChannel.IsPlaying)
             {
                 return;
             }

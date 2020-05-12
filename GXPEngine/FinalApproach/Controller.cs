@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Schema;
 using System.Xml.XPath;
 using GXPEngine;
 
@@ -150,6 +151,33 @@ public class Controller:GameObject
                     }
                 }
             }
+            if (child is MuseumMap) {
+                //var museumMap = child as MuseumMap;
+                foreach (var childObj in child.GetChildren()) {
+                    
+                    if (childObj is IInteractable)
+                    {
+                        Console.WriteLine(mouseOverButton(childObj as HUDElement));
+                        if (mouseOverButton(childObj as HUDElement))
+                        {
+                            listOfHoveredObjects.Add(childObj as HUDElement);
+                        }
+                        else
+                        {
+                            var HudElement = childObj as HUDElement;
+                            if (HudElement == hoveredObject)
+                            {
+                                hoveredObject.IsHovered = false;
+                                hoveredObject = null;
+                            }
+                        }
+                    }
+
+
+
+
+                }
+            }
         }
 
         
@@ -166,6 +194,12 @@ public class Controller:GameObject
     bool mouseOverButton(HUDElement button) {
         int width = button.width;
         int height = button.height;
+
+
+        var worldPosition= button.TransformPoint(button.x, button.y);
+        float buttonX = worldPosition.x;
+        float buttonY = worldPosition.y;
+
         int xMin = (int)button.x - width / 2;
         int yMin = (int)button.y - height / 2;
 

@@ -43,6 +43,8 @@
     <Compile Include="FinalApproach\Buttons\DraggableElement.cs" />
     <Compile Include="FinalApproach\Buttons\IInteractable.cs" />
     <Compile Include="FinalApproach\Buttons\Button.cs" />
+    <Compile Include="FinalApproach\Buttons\MuseumMap.cs" />
+    <Compile Include="FinalApproach\Buttons\MuseumPainting.cs" />
     <Compile Include="FinalApproach\Buttons\Puzzle\Puzzle.cs" />
     <Compile Include="FinalApproach\Buttons\Puzzle\PuzzleElement.cs" />
     <Compile Include="FinalApproach\Character.cs" />

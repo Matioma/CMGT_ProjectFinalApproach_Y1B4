@@ -8,6 +8,8 @@ using GXPEngine.FinalApproach;
 
 public class Scene:GameObject
 {
+    public Action OnSceneOpen=null;
+
     public Scene() {
     }
 
