@@ -30,6 +30,16 @@ public class SceneManager : GameObject
         }
     }
 
+    Scene lastScene = null;
+    public void OpenLastScene()
+    {
+        if(lastScene != null)
+        {
+            OpenScene(lastScene);
+        }
+    }
+
+
     //Scene Manager Fields
     List<Scene> scenes=new List<Scene>();
     Dictionary<string,Scene> levels= new Dictionary<string,Scene>();
@@ -45,10 +55,9 @@ public class SceneManager : GameObject
         AddChild(controller);
 
         AudioManager audioManager = new AudioManager();
-        //AddChild(audioManager);
 
         LoadLevel();
-        OpenScene("Puzzle");
+        OpenScene("MainMenu");
     }
 
 
@@ -61,6 +70,7 @@ public class SceneManager : GameObject
         {
             if (CurrentLevel != null)
             {
+                lastScene = CurrentLevel;
                 RemoveChild(CurrentLevel);
             }
             CurrentLevel = scenes[index];
@@ -74,6 +84,7 @@ public class SceneManager : GameObject
     {
         if (CurrentLevel != null)
         {
+            lastScene = CurrentLevel;
             RemoveChild(CurrentLevel);
         }
         if (levels.ContainsKey(key))
@@ -88,6 +99,12 @@ public class SceneManager : GameObject
        
     }
 
+    public void OpenScene(Scene scene) {
+        lastScene = CurrentLevel;
+        RemoveChild(CurrentLevel);
+        CurrentLevel = scene;
+        AddChildAt(CurrentLevel, 0);
+    }
 
 
     /// <summary>
@@ -200,7 +217,7 @@ public class SceneManager : GameObject
 
                var button = new Button("art/BackButton.png", 1, 1,
                    () => {
-                       Instance.OpenScene("MainMenu");
+                       Instance.OpenLastScene();
                        Controller.Instance.SetCursor(CursorType.BRUSH);
                        //Controller.Instance.SwitchCursor();
                    });
