@@ -157,7 +157,7 @@ public class Controller:GameObject
                     
                     if (childObj is IInteractable)
                     {
-                        Console.WriteLine(mouseOverButton(childObj as HUDElement));
+                        //Console.WriteLine(mouseOverButton(childObj as HUDElement));
                         if (mouseOverButton(childObj as HUDElement))
                         {
                             listOfHoveredObjects.Add(childObj as HUDElement);
@@ -196,9 +196,9 @@ public class Controller:GameObject
         int height = button.height;
 
 
-        var worldPosition= button.TransformPoint(button.x, button.y);
-        float buttonX = worldPosition.x;
-        float buttonY = worldPosition.y;
+        //var worldPosition= button.TransformPoint(button.x, button.y);
+        //float buttonX = worldPosition.x;
+        //float buttonY = worldPosition.y;
 
         int xMin = (int)button.x - width / 2;
         int yMin = (int)button.y - height / 2;

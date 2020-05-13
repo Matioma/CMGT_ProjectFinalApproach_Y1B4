@@ -63,7 +63,7 @@ class Puzzle:GameObject
 
 
                 //test.SetXY(realPosition.x, realPosition.y);
-                test.SetXY(random.Next((int)startPosition.x, 1024 - (int)startPosition.x), random.Next((int)startPosition.y, 768 - (int)startPosition.y));
+                test.SetXY(random.Next((int)startPosition.x, 1024 - (int)startPosition.x), random.Next((int)startPosition.y+test.height/2, 768 - (int)startPosition.y - test.height/2));
                 dictionary.Add(test, realPosition);
 
                 pTargetScene.AddChild(test);

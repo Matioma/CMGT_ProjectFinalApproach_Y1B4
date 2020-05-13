@@ -25,14 +25,18 @@ class PuzzleElement:DraggableElement
     }
     public override void OnClick()
     {
+       
         if (!onRightPosition)
         {
+            AudioManager.Instance.PlayOnce("SoundEffect/PuzzleDragging/sound 3");
             base.OnClick();
+            
         }
 
     }
     public override void OnClickPressed()
     {
+       
         if (!onRightPosition)
         {
             base.OnClickPressed();

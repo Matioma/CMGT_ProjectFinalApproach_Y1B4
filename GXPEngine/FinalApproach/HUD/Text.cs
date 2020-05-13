@@ -120,7 +120,7 @@ public class TextDialogBox : GameObject {
         var _foo = new PrivateFontCollection();
         _foo.AddFontFile(fontFile);
 
-        easyDraw.TextFont(new Font(_foo.Families[0], 15));
+        easyDraw.TextFont(new Font(_foo.Families[0], fontSize));
         easyDraw.Fill(color.x, color.y,color.z);
         easyDraw.Text(Message, 2*fontSize+TextOffset.x, (numberOfLines()+1)*2 *fontSize+2+ TextOffset.y);
     }

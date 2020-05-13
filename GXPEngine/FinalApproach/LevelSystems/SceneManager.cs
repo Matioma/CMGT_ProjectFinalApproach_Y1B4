@@ -64,8 +64,8 @@ public class SceneManager : GameObject
         AddChild(audioManager);
 
         
-        LoadLevels();
-        OpenScene(SceneType.Puzzle1);
+        //LoadLevels();
+        OpenScene(SceneType.Scene3);
         
     }
 
@@ -76,6 +76,11 @@ public class SceneManager : GameObject
         RemoveChild(CurrentLevel);
         CurrentLevel = scene;
         AddChildAt(CurrentLevel, 0);
+
+        if (CurrentLevel.OnSceneOpen != null)
+        {
+            CurrentLevel.OnSceneOpen.Invoke();
+        }
     }
 
     public void OpenScene(SceneType sceneType) {
@@ -84,15 +89,41 @@ public class SceneManager : GameObject
             lastScene = CurrentLevel;
             RemoveChild(CurrentLevel);
         }
+        if (!scenesDictionary.ContainsKey(sceneType)) {
+            switch (sceneType)
+            {
+                case SceneType.MainMenu:
+                    CreateMainMenu();
+                    break;
+                case SceneType.Gallery:
+                    CreateGallery();
+                    break;
+                case SceneType.Scene1:
+                    Scene1();
+                    break;
+                case SceneType.Scene2:
+                    Scene2();
+                    break;
+                case SceneType.Scene3:
+                    Scene3();
+                    break;
+                case SceneType.Scene4:
+                    Scene4();
+                    break;
+                case SceneType.Puzzle1:
+                    CreatePuzzle1Level();
+                    break;
+            }
+        }
+
         if (scenesDictionary.ContainsKey(sceneType))
         {
             CurrentLevel = scenesDictionary[sceneType];
             AddChildAt(CurrentLevel, 0);
         }
         else {
-            Console.WriteLine("Undefined Scene");
+            Console.WriteLine("this scene is not existent");
         }
-
         if (CurrentLevel.OnSceneOpen != null) {
             CurrentLevel.OnSceneOpen.Invoke();
         }
@@ -127,8 +158,13 @@ public class SceneManager : GameObject
                var button = new Button("art/transparent.png", 1, 1,
                   () =>
                   {
-                      AudioManager.Instance.StopSounds();
-                      AudioManager.Instance.AddEnvironementSound("Environment/7 wheatfield with crows");
+                      AudioManager.Instance.PlayOnce("SoundEffect/ButtonMenu");
+                      //AudioManager.Instance.PlaySound("SoundEffect/ButtonMenu");
+                      //AudioManager.Instance.PlaySound("SoundEffect/ButtonMenu");
+
+
+                      //AudioManager.Instance.StopSounds();
+                      //AudioManager.Instance.AddEnvironementSound("Environment/7 wheatfield with crows");
                       //Instance.OpenScene("Scene1");
                       Instance.OpenScene(SceneType.Scene1);
                       Controller.Instance.SetCursor(CursorType.HAND);
@@ -153,8 +189,9 @@ public class SceneManager : GameObject
                button = new Button("art/transparent.png", 1, 1,
                     () =>
                     {
+                        //AudioManager.Instance.PlaySound("SoundEffect/ButtonMenu");
+                        AudioManager.Instance.PlayOnce("SoundEffect/ButtonMenu");
                         Instance.OpenScene(SceneType.Gallery);
-                        //Controller.Instance.SetCursor(CursorType.HAND);
                     });
 
                button.onHoverAction = () => {
@@ -179,6 +216,8 @@ public class SceneManager : GameObject
                button = new Button("art/transparent.png", 1, 1,
                    () =>
                    {
+                       //AudioManager.Instance.PlaySound("SoundEffect/ButtonMenu");
+                       AudioManager.Instance.PlayOnce("SoundEffect/ButtonMenu");
                        System.Diagnostics.Process.Start("https://www.vangoghmuseum.nl/"); //Opens the Link
                    });
 
@@ -220,15 +259,31 @@ public class SceneManager : GameObject
               var painting = new MuseumPainting("Art/OriginalImages/painting1.png", 2, 1);
               painting.SetOrigin(painting.width / 2, painting.height / 2);
               painting.SetScaleXY(0.1f, 0.1f);
-              painting.SetXY(95, 155);
+              painting.SetXY(0, 0);
               museumMap.AddPainting(painting);
 
-              AddBackButton(sceneRef);
 
+
+              ///Tutorial Text
+              var tutorialDialogBox = new TextBox(new Vec2(300, 0), 500, 500);
+              //tutorialDialogBox.y += 20;
+              //tutorialDialogBox.x += 50;
+              tutorialDialogBox.Configure(() =>
+              {
+                  tutorialDialogBox.dialogBox.Message = "Click And Drag to move the map!";
+                  tutorialDialogBox.dialogBox.fontSize = 20;
+                  tutorialDialogBox.dialogBox.color = new Color3(0, 0, 0);
+              });
+              tutorialDialogBox.EndConfigure();
+              sceneRef.AddChild(tutorialDialogBox);
+
+              PreviousSceneButton(sceneRef);
 
               sceneRef.OnSceneOpen = () =>
               {
                   Controller.Instance.SetCursor(CursorType.HAND);
+                  AudioManager.Instance.StopSounds();
+                  AudioManager.Instance.AddEnvironementSound("Environment/gallery music", ".wav");
               };
 
           });
@@ -291,6 +346,9 @@ public class SceneManager : GameObject
 
                 sceneRef.OnSceneOpen = () =>
                 {
+                    AudioManager.Instance.StopSounds();
+                    AudioManager.Instance.AddEnvironementSound("Environment/7 wheatfield with crows");
+                    AudioManager.Instance.AddEnvironementSound("SoundEffect/BrushesPainting");
                     Controller.Instance.SetCursor(CursorType.HAND);
                 };
 
@@ -298,7 +356,6 @@ public class SceneManager : GameObject
     }
     private void Scene2()
     {
-        
         AddLevel(SceneType.Scene2,
             (sceneRef) => {
                 Sound sound = new Sound("Audio/VoiceoverLines/scene 1.wav");
@@ -333,12 +390,12 @@ public class SceneManager : GameObject
                 sceneRef.AddChild(button);
 
                 var dialogBox = new TextBox(button, true);
-                dialogBox.y += 20;
-                dialogBox.x += 50;
+                dialogBox.y += 5;
+                dialogBox.x += 30;
                 dialogBox.Configure(() =>
                 {
                     dialogBox.dialogBox.Message = "Oh, I was waiting for you! Where do you want me to start?";
-                    dialogBox.dialogBox.fontSize = 10;
+                    dialogBox.dialogBox.fontSize = 15;
                     dialogBox.dialogBox.color = new Color3(0, 0, 0);
                 });
                 dialogBox.EndConfigure();
@@ -348,7 +405,6 @@ public class SceneManager : GameObject
                 button = new Button("art/Dialog Background.png", 1, 1,
                     () => {
                         Instance.OpenScene(SceneType.Puzzle1);
-                        //Instance.OpenScene("Puzzle");
                         Controller.Instance.SetCursor(CursorType.BRUSH);
                         AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
 
@@ -358,12 +414,12 @@ public class SceneManager : GameObject
                 sceneRef.AddChild(button);
 
                 dialogBox = new TextBox(button, true);
-                dialogBox.y += 10;
+                dialogBox.y += -10;
                 dialogBox.x += 50;
                 dialogBox.Configure(() =>
                 {
                     dialogBox.dialogBox.Message = "What are you drawing there? ";
-                    dialogBox.dialogBox.fontSize = 10;
+                    dialogBox.dialogBox.fontSize = 15;
                     dialogBox.dialogBox.color = new Color3(0, 0, 0);
                 });
                 dialogBox.EndConfigure();
@@ -376,6 +432,7 @@ public class SceneManager : GameObject
 
                 sceneRef.OnSceneOpen = () =>
                 {
+                    AudioManager.Instance.StopSound("SoundEffect/BrushesPainting");
                     Controller.Instance.SetCursor(CursorType.HAND);
                 };
             });
@@ -406,12 +463,13 @@ public class SceneManager : GameObject
                         sceneRef.AddChild(button);
 
                         var dialogBox = new TextBox(button, true);
-                        dialogBox.y += 10;
+                        
                         dialogBox.x += 50;
+                        dialogBox.y += -35;
                         dialogBox.Configure(() =>
                         {
                             dialogBox.dialogBox.Message = "I was born on the 30 of March, 1853 in Zundert,The\nNetherlands and I was the eldest son of the Protestant\nclergyman Theodorus van Gogh and Anna Cornelia \nCarbentus.";
-                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.fontSize = 15;
                             dialogBox.dialogBox.TextOffset = new Vec2(0, 10);
                             dialogBox.dialogBox.color = new Color3(0, 0, 0);
                         });
@@ -421,20 +479,20 @@ public class SceneManager : GameObject
                         //Response
                         button = new Button("art/Dialog Background.png", 1, 1,
                             () => {
-                                Instance.OpenScene(SceneType.Scene4);
-                                
+                                Instance.OpenScene(SceneType.Scene4);                            
                             });
                         button.SetScaleXY(0.5f, 0.5f);
                         button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
                         sceneRef.AddChild(button);
 
                         dialogBox = new TextBox(button, true);
-                        dialogBox.y += 10;
-                        dialogBox.x += 85;
+                       
+                        dialogBox.x += 75;
+                        dialogBox.y += -10;
                         dialogBox.Configure(() =>
                         {
                             dialogBox.dialogBox.Message = "What happened next?";
-                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.fontSize = 15;
                             dialogBox.dialogBox.color = new Color3(0, 0, 0);
                         });
                         dialogBox.EndConfigure();
@@ -449,8 +507,10 @@ public class SceneManager : GameObject
 
                         sceneRef.OnSceneOpen = () =>
                         {
-                            Controller.Instance.SetCursor(CursorType.HAND);
                             AudioManager.Instance.StopSounds();
+                            AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
+                            Controller.Instance.SetCursor(CursorType.HAND);
+                            
                         };
                     });
     }
@@ -480,12 +540,12 @@ public class SceneManager : GameObject
                         sceneRef.AddChild(button);
 
                         var dialogBox = new TextBox(button, true);
-                        dialogBox.y += 10;
+                        dialogBox.y += -37;
                         dialogBox.x += 50;
                         dialogBox.Configure(() =>
                         {
                             dialogBox.dialogBox.Message = "As a kid, I used to dream of becoming a pastor just like \nmy father. I was changing schools a lot and honestly I \nwasn't the best student, which led me to abandoning \nthat dream.";
-                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.fontSize = 15;
                             dialogBox.dialogBox.TextOffset = new Vec2(0, 10);
                             dialogBox.dialogBox.color = new Color3(0, 0, 0);
                         });
@@ -502,12 +562,12 @@ public class SceneManager : GameObject
                         sceneRef.AddChild(button);
 
                         dialogBox = new TextBox(button, true);
-                        dialogBox.y += 5;
+                        dialogBox.y += -25;
                         dialogBox.x += 15;
                         dialogBox.Configure(() =>
                         {
                             dialogBox.dialogBox.Message = "Sounds interesting! Tell me about \nyour school years.";
-                            dialogBox.dialogBox.fontSize = 10;
+                            dialogBox.dialogBox.fontSize = 15;
                             dialogBox.dialogBox.color = new Color3(0, 0, 0);
                         });
                         dialogBox.EndConfigure();
@@ -521,6 +581,7 @@ public class SceneManager : GameObject
 
                         sceneRef.OnSceneOpen = () =>
                         {
+                            AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -534,6 +595,7 @@ public class SceneManager : GameObject
             var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle1_start/", 2, 2, new Vec2(20, 153));
             puzzleGame.OnPuzzleSolved = () =>
             {
+                AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
                 Controller.Instance.stats.AddScore(1);
                 if (scoreTextDialog != null)
                 {
@@ -544,24 +606,19 @@ public class SceneManager : GameObject
                 AudioManager.Instance.PlaySound("VoiceoverLines/scene 3");
                 var button = new Button("art/Dialog Background.png", 1, 1,
                    () => {
-                       AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
                        Instance.OpenScene(SceneType.Scene3);
-                       
-                       //Instance.OpenScene("Scene3");
-                       Controller.Instance.SetCursor(CursorType.HAND);
-
                    });
                 button.SetScaleXY(0.5f, 0.5f);
                 button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
                 sceneRef.AddChild(button);
 
                 var dialogBox = new TextBox(button, true);
-                dialogBox.x += 50;
-                dialogBox.y += 10;
+                dialogBox.x += 20;
+                dialogBox.y -= 10;
                 dialogBox.Configure(() =>
                 {
                     dialogBox.dialogBox.Message = "Amazing, tell me more about you!";
-                    dialogBox.dialogBox.fontSize = 10;
+                    dialogBox.dialogBox.fontSize = 15;
                     dialogBox.dialogBox.color = new Color3(0, 0, 0);
                 });
                 dialogBox.EndConfigure();
@@ -578,12 +635,12 @@ public class SceneManager : GameObject
                 sceneRef.AddChild(button);
 
                 dialogBox = new TextBox(button, true);
-                dialogBox.y += 10;
-                dialogBox.x += 10;
+                dialogBox.y -= 30;
+                dialogBox.x += 20;
                 dialogBox.Configure(() =>
                 {
-                    dialogBox.dialogBox.Message = "You are doing great, young artist!With common forces\nwe made it through half of the painting. Maybe you can \ncheck it out laterto help me finish?";
-                    dialogBox.dialogBox.fontSize = 10;
+                    dialogBox.dialogBox.Message = "You are doing great, young artist!With common forces\nwe made it through half of the painting. Maybe you can \ncheck it out later to help me finish?";
+                    dialogBox.dialogBox.fontSize = 15;
                     dialogBox.dialogBox.color = new Color3(0, 0, 0);
                 });
                 dialogBox.EndConfigure();
@@ -592,6 +649,19 @@ public class SceneManager : GameObject
             };
             sceneRef.AddChild(puzzleGame);
 
+
+            ///Tutorial Text
+            var tutorialDialogBox = new TextBox(new Vec2(300, 50), 500, 500);
+            //tutorialDialogBox.y += 20;
+            //tutorialDialogBox.x += 50;
+            tutorialDialogBox.Configure(() =>
+            {
+                tutorialDialogBox.dialogBox.Message = "Click And Drag to solve the Puzzle!";
+                tutorialDialogBox.dialogBox.fontSize = 15;
+                tutorialDialogBox.dialogBox.color = new Color3(255, 255, 255);
+            });
+            tutorialDialogBox.EndConfigure();
+            sceneRef.AddChild(tutorialDialogBox);
 
 
             ///
@@ -603,12 +673,12 @@ public class SceneManager : GameObject
             sceneRef.AddChild(TextMessageButton);
 
             var tempDialogBox = new TextBox(TextMessageButton, true);
-            tempDialogBox.y += 10;
-            tempDialogBox.x += 10;
+            tempDialogBox.y -= 10;
+            tempDialogBox.x += 20;
             tempDialogBox.Configure(() =>
             {
-                tempDialogBox.dialogBox.Message = "That? ... That is going to be my last painting, \nchild. I should be done with it by the end of the tour";
-                tempDialogBox.dialogBox.fontSize = 10;
+                tempDialogBox.dialogBox.Message = "That? ... That is going to be my last painting, \nchild. I should be done with it by the end of the tour.";
+                tempDialogBox.dialogBox.fontSize = 15;
                 tempDialogBox.dialogBox.color = new Color3(0, 0, 0);
             });
             tempDialogBox.EndConfigure();
@@ -630,13 +700,24 @@ public class SceneManager : GameObject
             };
         });
     }
-
     void AddBackButton(Scene scene)
     {
         var button = new Button("art/BackButton.png", 1, 1,
                    () => {
+                       //Instance.OpenLastScene();
                        Instance.OpenScene(SceneType.MainMenu);
                    });
+        button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
+        scene.AddChild(button);
+
+    }
+
+    void PreviousSceneButton(Scene scene) {
+        var button = new Button("art/BackButton.png", 1, 1,
+            () => {
+                Instance.OpenLastScene();
+                //Instance.OpenScene(SceneType.MainMenu);
+            });
         button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
         scene.AddChild(button);
 
@@ -660,7 +741,6 @@ public class SceneManager : GameObject
         button.SetXY(button.width + 20, button.height / 2 - 20);
         scene.AddChild(button);
     }
-
     TextBox AddSunflowerTextBox(Scene scene) {
         TextBox textBoxToReturn = null;
 
@@ -672,11 +752,11 @@ public class SceneManager : GameObject
         scene.AddChild(UIButton);
 
         var flowerCount = new TextBox(UIButton);
-        flowerCount.y += UIButton.height / 2;
+        flowerCount.y += 50;
         flowerCount.Configure(() =>
         {
             flowerCount.dialogBox.Message = Controller.Instance.stats.Score.ToString();
-            flowerCount.dialogBox.fontSize = 10;
+            flowerCount.dialogBox.fontSize = 15;
             flowerCount.dialogBox.color = new Color3(255, 255, 255);
         });
         flowerCount.EndConfigure();
