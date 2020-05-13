@@ -52,6 +52,7 @@
     <Compile Include="FinalApproach\Cursor.cs" />
     <Compile Include="FinalApproach\LevelSystems\Scene.cs" />
     <Compile Include="FinalApproach\LevelSystems\SceneManager.cs" />
+    <Compile Include="FinalApproach\MuseumUI.cs" />
     <Compile Include="FinalApproach\PlayerStats.cs" />
     <Compile Include="FinalApproach\HUD\Text.cs" />
     <Compile Include="FinalApproach\HUD\TextBox.cs" />

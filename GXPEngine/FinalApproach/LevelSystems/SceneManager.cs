@@ -11,7 +11,10 @@ public enum SceneType {
     Scene2,
     Scene3,
     Scene4,
-    Puzzle1
+    Scene5,
+    Scene6,
+    Puzzle1,
+    Puzzle2
 }
 
 public class SceneManager : GameObject
@@ -63,9 +66,10 @@ public class SceneManager : GameObject
         AudioManager audioManager = new AudioManager();
         AddChild(audioManager);
 
-        
+
+        CreateGallery();
         //LoadLevels();
-        OpenScene(SceneType.Scene3);
+        OpenScene(SceneType.Scene6);
         
     }
 
@@ -110,8 +114,17 @@ public class SceneManager : GameObject
                 case SceneType.Scene4:
                     Scene4();
                     break;
+                case SceneType.Scene5:
+                    Scene5();
+                    break;
+                case SceneType.Scene6:
+                    Scene6();
+                    break;
                 case SceneType.Puzzle1:
                     CreatePuzzle1Level();
+                    break;
+                case SceneType.Puzzle2:
+                    CreatePuzzle2Level();
                     break;
             }
         }
@@ -255,12 +268,62 @@ public class SceneManager : GameObject
               museumMap.height *= 2;
               sceneRef.AddChild(museumMap);
 
+              var museumUI = new MuseumUI();
+              sceneRef.AddChild(museumUI);
 
-              var painting = new MuseumPainting("Art/OriginalImages/painting1.png", 2, 1);
+
+              // Creating the paintings
+              var painting = new MuseumPainting("Art/OriginalImages/painting1.png", 2, 1 , PaintingsIdentifiers.Painting1);
               painting.SetOrigin(painting.width / 2, painting.height / 2);
-              painting.SetScaleXY(0.1f, 0.1f);
-              painting.SetXY(0, 0);
+              painting.SetScaleXY(0.15f, 0.15f);
+              painting.SetXY(190, 314);
               museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
+
+
+              painting = new MuseumPainting("Art/OriginalImages/painting2.png", 2, 1, PaintingsIdentifiers.Painting2);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.15f, 0.15f);
+              painting.SetXY(405, -440);
+              museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
+
+
+              painting = new MuseumPainting("Art/OriginalImages/painting3.png", 2, 1, PaintingsIdentifiers.Painting3);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.15f, 0.15f);
+              painting.SetXY(-40, -320);
+              museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
+
+
+              painting = new MuseumPainting("Art/OriginalImages/painting4.png", 2, 1, PaintingsIdentifiers.Painting4);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.15f, 0.15f);
+              painting.SetXY(-420, -530);
+              museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
+
+              painting = new MuseumPainting("Art/OriginalImages/painting5.png", 2, 1, PaintingsIdentifiers.Painting5);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.15f, 0.15f);
+              painting.SetXY(-638, 170);
+              museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
+
+              painting = new MuseumPainting("Art/OriginalImages/painting6.png", 2, 1, PaintingsIdentifiers.Painting6);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.2f, 0.2f);
+              painting.SetXY(-638, 500);
+              museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
+
+              painting = new MuseumPainting("Art/OriginalImages/painting7.png", 2, 1, PaintingsIdentifiers.Painting7);
+              painting.SetOrigin(painting.width / 2, painting.height / 2);
+              painting.SetScaleXY(0.15f, 0.15f);
+              painting.SetXY(-190, 510);
+              museumMap.AddPainting(painting);
+              sceneRef.AddChildAt(painting, GetChildren().Count - 1);
 
 
 
@@ -275,9 +338,13 @@ public class SceneManager : GameObject
                   tutorialDialogBox.dialogBox.color = new Color3(0, 0, 0);
               });
               tutorialDialogBox.EndConfigure();
-              sceneRef.AddChild(tutorialDialogBox);
+              sceneRef.AddChildAt(tutorialDialogBox, GetChildren().Count-1);
 
               PreviousSceneButton(sceneRef);
+
+
+
+
 
               sceneRef.OnSceneOpen = () =>
               {
@@ -285,6 +352,8 @@ public class SceneManager : GameObject
                   AudioManager.Instance.StopSounds();
                   AudioManager.Instance.AddEnvironementSound("Environment/gallery music", ".wav");
               };
+
+
 
           });
 
@@ -479,7 +548,8 @@ public class SceneManager : GameObject
                         //Response
                         button = new Button("art/Dialog Background.png", 1, 1,
                             () => {
-                                Instance.OpenScene(SceneType.Scene4);                            
+                                Instance.OpenScene(SceneType.Scene4);
+                                AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
                             });
                         button.SetScaleXY(0.5f, 0.5f);
                         button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
@@ -508,7 +578,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
+                            //AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
                             Controller.Instance.SetCursor(CursorType.HAND);
                             
                         };
@@ -555,7 +625,8 @@ public class SceneManager : GameObject
                         //Response
                         button = new Button("art/Dialog Background.png", 1, 1,
                             () => {
-
+                                AudioManager.Instance.PlaySound("VoiceoverLines/scene 6");
+                                OpenScene(SceneType.Scene5);
                             });
                         button.SetScaleXY(0.5f, 0.5f);
                         button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
@@ -581,11 +652,205 @@ public class SceneManager : GameObject
 
                         sceneRef.OnSceneOpen = () =>
                         {
-                            AudioManager.Instance.PlaySound("VoiceoverLines/scene 5");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
     }
+
+
+    private void Scene5()
+    {
+        AddLevel(SceneType.Scene5,
+                    (sceneRef) =>
+                    {
+                        var imageLayer = new AnimationSprite("art/Backgrounds/Background2.png", 1, 1);
+                        imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                        imageLayer.SetXY(game.width / 2, game.height / 2);
+                        sceneRef.AddChild(imageLayer);
+
+
+
+                        imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
+                        imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                        imageLayer.SetXY(300, 450);
+                        sceneRef.AddChild(imageLayer);
+
+
+                        imageLayer = new AnimationSprite("art/Backgrounds/Background2.png", 1, 1);
+                        imageLayer.SetScaleXY(0.25f, 0.25f);
+                        imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                        imageLayer.SetXY(220, 350);
+                        sceneRef.AddChild(imageLayer);
+
+
+                        var character = new Character("art/vangoghpainting.png", 6, 1);
+                        character.SetXY(300, 450);
+                        sceneRef.AddChild(character);
+
+
+                        //Van gogh text
+                        var button = new Button("art/Dialog Background.png", 1, 1,
+                           () => {
+
+                           });
+                        button.SetScaleXY(0.8f, 1f);
+                        button.SetXY(game.width - button.width / 2 - 20, game.height - 190);
+                        sceneRef.AddChild(button);
+
+                        var dialogBox = new TextBox(button, true);
+                        dialogBox.y += -37;
+                        dialogBox.x += 50;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = "Well, school was just not for me, so I moved to Belgium\n and chose to become a miner instead. Then I took my \nfirst art classes and got keen on learning from art \nbooks.";
+                            dialogBox.dialogBox.fontSize = 15;
+                            dialogBox.dialogBox.TextOffset = new Vec2(0, 10);
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+                        //Response
+                        //
+                        //
+                        button = new Button("art/Dialog Background.png", 1, 1,
+                            () => {
+                                AudioManager.Instance.PlaySound("VoiceoverLines/scene 7");
+                                OpenScene(SceneType.Puzzle2);
+                            });
+                        button.SetScaleXY(0.5f, 0.5f);
+                        button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
+                        sceneRef.AddChild(button);
+
+                        dialogBox = new TextBox(button, true);
+                        dialogBox.y += -25;
+                        dialogBox.x += 15;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = "Sounds interesting! Tell me about \nyour school years.";
+                            dialogBox.dialogBox.fontSize = 15;
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+
+                        //UI Buttons
+                        AddBackButton(sceneRef);
+                        AddGallaryButton(sceneRef);
+
+
+                        sceneRef.OnSceneOpen = () =>
+                        {
+                            AudioManager.Instance.AddEnvironementSound("Environment/1 Women in the moor");
+                            Controller.Instance.SetCursor(CursorType.HAND);
+                        };
+                    });
+    }
+
+    private void Scene6()
+    {
+        string backgroundPath = "art/Backgrounds/the bible background.png";
+        string characterAnimation = "art/vangoghpainting.png";
+        string dialogVanGoghMessage = "Well, school was just not for me, so I moved to Belgium\n and chose to become a miner instead. Then I took my \nfirst art classes and got keen on learning from art \nbooks.";
+        string userResponse = "Sounds interesting! Tell me about \nyour school years.";
+
+        string nextSceneVoiceOver = "VoiceoverLines/scene 8";
+        SceneType TargetScene =SceneType.Puzzle2;
+        AddLevel(SceneType.Scene6,
+                    (sceneRef) =>
+                    {
+                        //string dialog 
+
+
+                        var imageLayer = new AnimationSprite(backgroundPath, 1, 1);
+                        
+                        
+                        imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                        imageLayer.SetXY(game.width / 2, game.height / 2);
+                        sceneRef.AddChild(imageLayer);
+
+
+
+                        imageLayer = new AnimationSprite("art/paintStand.png", 1, 1);
+                        imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                        imageLayer.SetXY(300, 450);
+                        sceneRef.AddChild(imageLayer);
+
+
+                        imageLayer = new AnimationSprite(backgroundPath, 1, 1);
+                        imageLayer.SetScaleXY(0.25f, 0.25f);
+                        imageLayer.SetOrigin(imageLayer.width / 2, imageLayer.height / 2);
+                        imageLayer.SetXY(220, 350);
+                        sceneRef.AddChild(imageLayer);
+
+
+                        var character = new Character(characterAnimation, 6, 1);
+                        character.SetXY(300, 450);
+                        sceneRef.AddChild(character);
+
+
+                        //Van gogh text
+                        var button = new Button("art/Dialog Background.png", 1, 1,
+                           () => {
+
+                           });
+                        button.SetScaleXY(0.8f, 1f);
+                        button.SetXY(game.width - button.width / 2 - 20, game.height - 190);
+                        sceneRef.AddChild(button);
+
+                        var dialogBox = new TextBox(button, true);
+                        dialogBox.y += -37;
+                        dialogBox.x += 50;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = dialogVanGoghMessage;
+                            dialogBox.dialogBox.fontSize = 15;
+                            dialogBox.dialogBox.TextOffset = new Vec2(0, 10);
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+                        //Response
+                        //
+                        //
+                        button = new Button("art/Dialog Background.png", 1, 1,
+                            () => {
+                                AudioManager.Instance.PlaySound(nextSceneVoiceOver);
+                                OpenScene(TargetScene);
+                            });
+                        button.SetScaleXY(0.5f, 0.5f);
+                        button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
+                        sceneRef.AddChild(button);
+
+                        dialogBox = new TextBox(button, true);
+                        dialogBox.y += -25;
+                        dialogBox.x += 15;
+                        dialogBox.Configure(() =>
+                        {
+                            dialogBox.dialogBox.Message = userResponse;
+                            dialogBox.dialogBox.fontSize = 15;
+                            dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                        });
+                        dialogBox.EndConfigure();
+                        sceneRef.AddChild(dialogBox);
+
+
+                        //UI Buttons
+                        AddBackButton(sceneRef);
+                        AddGallaryButton(sceneRef);
+
+
+                        sceneRef.OnSceneOpen = () =>
+                        {
+                            AudioManager.Instance.StopSounds();
+                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            Controller.Instance.SetCursor(CursorType.HAND);
+                        };
+                    });
+    }
+
     private void CreatePuzzle1Level()
     {
         AddLevel(SceneType.Puzzle1, (sceneRef) =>
@@ -596,6 +861,9 @@ public class SceneManager : GameObject
             puzzleGame.OnPuzzleSolved = () =>
             {
                 AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
+                //Controller.Instance.stats.PuzzleSolved(PaintingsIdentifiers.Painting2);
+
+
                 Controller.Instance.stats.AddScore(1);
                 if (scoreTextDialog != null)
                 {
@@ -606,7 +874,9 @@ public class SceneManager : GameObject
                 AudioManager.Instance.PlaySound("VoiceoverLines/scene 3");
                 var button = new Button("art/Dialog Background.png", 1, 1,
                    () => {
+                       AudioManager.Instance.PlaySound("VoiceoverLines/scene 4");
                        Instance.OpenScene(SceneType.Scene3);
+
                    });
                 button.SetScaleXY(0.5f, 0.5f);
                 button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
@@ -694,7 +964,207 @@ public class SceneManager : GameObject
 
             sceneRef.OnSceneOpen = () =>
             {
-                AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                Controller.Instance.SetCursor(CursorType.BRUSH);
+                AudioManager.Instance.ReduceVolume(0.1f);
+            };
+        });
+    }
+    private void CreatePuzzle2Level()
+    {
+        AddLevel(SceneType.Puzzle2, (sceneRef) =>
+        {
+            TextBox scoreTextDialog = null;
+
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle2/", 2, 4, new Vec2(138, 99));
+            puzzleGame.OnPuzzleSolved = () =>
+            {
+                AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
+                Controller.Instance.stats.PuzzleSolved(PaintingsIdentifiers.Painting1);
+
+
+                Controller.Instance.stats.AddScore(1);
+                if (scoreTextDialog != null)
+                {
+                    scoreTextDialog.UpdateText(Controller.Instance.stats.Score.ToString());
+                }
+
+                var button = new Button("art/Dialog Background.png", 1, 1,
+                   () => {
+                       AudioManager.Instance.PlaySound("VoiceoverLines/scene 8");
+                       Instance.OpenScene(SceneType.Scene6);
+
+                   });
+                button.SetScaleXY(0.5f, 0.5f);
+                button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
+                sceneRef.AddChild(button);
+
+                var dialogBox = new TextBox(button, true);
+                dialogBox.x += 20;
+                dialogBox.y -= 10;
+                dialogBox.Configure(() =>
+                {
+                    dialogBox.dialogBox.Message = "Amazing!";
+                    dialogBox.dialogBox.fontSize = 15;
+                    dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                });
+                dialogBox.EndConfigure();
+                sceneRef.AddChild(dialogBox);
+
+                sceneRef.RemoveTemporaryObjects();
+            };
+            sceneRef.AddChild(puzzleGame);
+
+
+            ///Tutorial Text
+            var tutorialDialogBox = new TextBox(new Vec2(300, 50), 500, 500);
+            //tutorialDialogBox.y += 20;
+            //tutorialDialogBox.x += 50;
+            tutorialDialogBox.Configure(() =>
+            {
+                tutorialDialogBox.dialogBox.Message = "Click And Drag to solve the Puzzle!";
+                tutorialDialogBox.dialogBox.fontSize = 15;
+                tutorialDialogBox.dialogBox.color = new Color3(255, 255, 255);
+            });
+            tutorialDialogBox.EndConfigure();
+            sceneRef.AddChild(tutorialDialogBox);
+
+
+
+            ///
+            ///Adding temporary dialog boxes
+            ///
+            var TextMessageButton = new Button("art/Dialog Background.png", 1, 1);
+            TextMessageButton.SetScaleXY(0.7f, 0.7f);
+            TextMessageButton.SetXY(TextMessageButton.width / 2, game.height - TextMessageButton.height / 2);
+            sceneRef.AddChild(TextMessageButton);
+
+            var tempDialogBox = new TextBox(TextMessageButton, true);
+            tempDialogBox.y -= 10;
+            tempDialogBox.x += 20;
+            tempDialogBox.Configure(() =>
+            {
+                tempDialogBox.dialogBox.Message = "I loved drawing what I see, as I say: \n“I want to touch people with my art. I want them to say 'he feels deeply, he feels tenderly'.” I wanted to sell my works because my art could possibly help  peasants";
+                tempDialogBox.dialogBox.fontSize = 15;
+                tempDialogBox.dialogBox.color = new Color3(0, 0, 0);
+            });
+            tempDialogBox.EndConfigure();
+            sceneRef.AddTemporaryObject(TextMessageButton);
+            sceneRef.AddTemporaryObject(tempDialogBox);
+
+
+            //UI Buttons
+            AddBackButton(sceneRef);
+            AddGallaryButtonPuzzle(sceneRef);
+            scoreTextDialog = AddSunflowerTextBox(sceneRef);
+
+
+            sceneRef.OnSceneOpen = () =>
+            {
+                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                Controller.Instance.SetCursor(CursorType.BRUSH);
+                AudioManager.Instance.ReduceVolume(0.1f);
+            };
+        });
+    }
+
+
+    private void CreatePuzzle3Level()
+    {
+        string NaratorTextPath = "I loved drawing what I see, as I say: \n“I want to touch people with my art. I want them to say 'he feels deeply, he feels tenderly'.” I wanted to sell my works because my art could possibly help  peasants";
+        string playerResponse = "Amazing!";
+
+        string nextSceneVoiceOver = "VoiceoverLines/scene 9";
+        AddLevel(SceneType.Puzzle2, (sceneRef) =>
+        {
+            TextBox scoreTextDialog = null;
+
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle3/", 2, 4, new Vec2(138, 99));
+            puzzleGame.OnPuzzleSolved = () =>
+            {
+                AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
+                Controller.Instance.stats.PuzzleSolved(PaintingsIdentifiers.Painting1);
+
+
+                Controller.Instance.stats.AddScore(1);
+                if (scoreTextDialog != null)
+                {
+                    scoreTextDialog.UpdateText(Controller.Instance.stats.Score.ToString());
+                }
+
+                var button = new Button("art/Dialog Background.png", 1, 1,
+                   () => {
+                       AudioManager.Instance.PlaySound(nextSceneVoiceOver);
+                       Instance.OpenScene(SceneType.Scene6);
+
+                   });
+                button.SetScaleXY(0.5f, 0.5f);
+                button.SetXY(game.width - button.width / 2 - 30, game.height - 70);
+                sceneRef.AddChild(button);
+
+                var dialogBox = new TextBox(button, true);
+                dialogBox.x += 20;
+                dialogBox.y -= 10;
+                dialogBox.Configure(() =>
+                {
+                    dialogBox.dialogBox.Message = playerResponse;
+                    dialogBox.dialogBox.fontSize = 15;
+                    dialogBox.dialogBox.color = new Color3(0, 0, 0);
+                });
+                dialogBox.EndConfigure();
+                sceneRef.AddChild(dialogBox);
+
+                sceneRef.RemoveTemporaryObjects();
+            };
+            sceneRef.AddChild(puzzleGame);
+
+
+            ///Tutorial Text
+            var tutorialDialogBox = new TextBox(new Vec2(300, 50), 500, 500);
+            //tutorialDialogBox.y += 20;
+            //tutorialDialogBox.x += 50;
+            tutorialDialogBox.Configure(() =>
+            {
+                tutorialDialogBox.dialogBox.Message = "Click And Drag to solve the Puzzle!";
+                tutorialDialogBox.dialogBox.fontSize = 15;
+                tutorialDialogBox.dialogBox.color = new Color3(255, 255, 255);
+            });
+            tutorialDialogBox.EndConfigure();
+            sceneRef.AddChild(tutorialDialogBox);
+
+
+
+            ///
+            ///Adding temporary dialog boxes
+            ///
+            var TextMessageButton = new Button("art/Dialog Background.png", 1, 1);
+            TextMessageButton.SetScaleXY(0.7f, 0.7f);
+            TextMessageButton.SetXY(TextMessageButton.width / 2, game.height - TextMessageButton.height / 2);
+            sceneRef.AddChild(TextMessageButton);
+
+            var tempDialogBox = new TextBox(TextMessageButton, true);
+            tempDialogBox.y -= 10;
+            tempDialogBox.x += 20;
+            tempDialogBox.Configure(() =>
+            {
+                tempDialogBox.dialogBox.Message = NaratorTextPath;
+                tempDialogBox.dialogBox.fontSize = 15;
+                tempDialogBox.dialogBox.color = new Color3(0, 0, 0);
+            });
+            tempDialogBox.EndConfigure();
+            sceneRef.AddTemporaryObject(TextMessageButton);
+            sceneRef.AddTemporaryObject(tempDialogBox);
+
+
+            //UI Buttons
+            AddBackButton(sceneRef);
+            AddGallaryButtonPuzzle(sceneRef);
+            scoreTextDialog = AddSunflowerTextBox(sceneRef);
+
+
+            sceneRef.OnSceneOpen = () =>
+            {
+                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
                 Controller.Instance.SetCursor(CursorType.BRUSH);
                 AudioManager.Instance.ReduceVolume(0.1f);
             };
@@ -783,6 +1253,6 @@ public class SceneManager : GameObject
     }
 
 
-
+   
 }
 
