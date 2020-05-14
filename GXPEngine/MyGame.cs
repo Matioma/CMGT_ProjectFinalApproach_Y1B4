@@ -8,7 +8,6 @@ using GXPEngine.Core;
 using TiledMapParser;
 public class MyGame : Game
 {
-
     public static SceneManager sceneManger { get;private set; }
     public MyGame() : base(1024, 768, false)		// Create a window that's 800x600 and NOT fullscreen
     {
