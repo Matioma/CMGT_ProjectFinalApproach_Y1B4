@@ -38,9 +38,15 @@ class Puzzle:GameObject
     public static Puzzle Create(Scene pTargetScene, string path, int cols, int rows, Vec2 startPosition) {
         Random random = new Random();
 
+        int puzzleWidth = 0;
+        int puzzleHeight = 0;
+       
 
         var background = new Sprite(path + "background.png");
         pTargetScene.AddChild(background);
+
+
+       
 
         //Build the puzzle
         var dictionary = new Dictionary<DraggableElement, Vec2>();
@@ -53,6 +59,9 @@ class Puzzle:GameObject
                 string fileName = path + "puzzle to put.png";
 
                 var test = new PuzzleElement(fileName, cols, rows);
+                puzzleWidth = test.width;
+                puzzleHeight = test.height;
+
                 test.SetFrame(i * cols + j);
                 puzzleElements.Add(test);
 
@@ -69,6 +78,19 @@ class Puzzle:GameObject
                 pTargetScene.AddChild(test);
             }
         }
+
+
+        Sprite border = new Sprite("Art/PuzzleBorder.png");
+        border.x = startPosition.x;
+        border.y = startPosition.y;
+        border.width = puzzleWidth* cols;
+        border.height = puzzleHeight* rows;
+
+        
+        pTargetScene.AddChildAt(border,1);
+
+
+
         var puzzleGame = new Puzzle(dictionary);
         return puzzleGame;
     }

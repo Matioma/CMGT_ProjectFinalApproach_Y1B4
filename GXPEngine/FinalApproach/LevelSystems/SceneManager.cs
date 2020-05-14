@@ -81,7 +81,7 @@ public class SceneManager : GameObject
 
         CreateGallery();
         //LoadLevels();
-        OpenScene(SceneType.Scene9);
+        OpenScene(SceneType.Scene5);
         
     }
 
@@ -802,7 +802,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            AudioManager.Instance.AddEnvironementSound("Environment/1 Women in the moor");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1013,7 +1013,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            AudioManager.Instance.AddEnvironementSound("Environment/3 Backyard of old houses in Antwerp");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1121,7 +1121,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            AudioManager.Instance.AddEnvironementSound("Environment/4 portrait of theo van gogh ");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1230,7 +1230,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            AudioManager.Instance.AddEnvironementSound("Environment/5 stillife of 15 sunflowers");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1446,7 +1446,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            AudioManager.Instance.AddEnvironementSound("Environment/6 portrait patient saint paul hospital");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1555,7 +1555,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/2 Stillife with the bible");
+                            AudioManager.Instance.AddEnvironementSound("Environment/7 wheatfield with crows");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1796,7 +1796,7 @@ public class SceneManager : GameObject
         {
             TextBox scoreTextDialog = null;
 
-            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle3/", 4, 2, new Vec2(138, 99));
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle3/", 4, 2, new Vec2(152, 87));
             puzzleGame.OnPuzzleSolved = () =>
             {
                 AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
@@ -2006,7 +2006,7 @@ public class SceneManager : GameObject
         {
             TextBox scoreTextDialog = null;
 
-            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle5/", 4, 2, new Vec2(277, 73));
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle5/", 4, 2, new Vec2(270, 57));
             puzzleGame.OnPuzzleSolved = () =>
             {
                 AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
@@ -2111,7 +2111,7 @@ public class SceneManager : GameObject
         {
             TextBox scoreTextDialog = null;
 
-            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle6/", 3, 4, new Vec2(277, 73));
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle6/", 3, 4, new Vec2(267, 62));
             puzzleGame.OnPuzzleSolved = () =>
             {
                 AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
@@ -2216,7 +2216,7 @@ public class SceneManager : GameObject
         {
             TextBox scoreTextDialog = null;
 
-            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle7/", 4, 3, new Vec2(277, 73));
+            var puzzleGame = Puzzle.Create(sceneRef, "Art/Puzzles/puzzle7/", 4, 3, new Vec2(287, 64));
             puzzleGame.OnPuzzleSolved = () =>
             {
                 AudioManager.Instance.PlayOnce("SoundEffect/positive feedback");
