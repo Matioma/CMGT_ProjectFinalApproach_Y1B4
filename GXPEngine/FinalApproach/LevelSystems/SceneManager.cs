@@ -57,6 +57,7 @@ public class SceneManager : GameObject
     }
 
     Scene lastScene = null;
+    Scene progressScene = null;
     public void OpenLastScene()
     {
         if(lastScene != null)
@@ -66,6 +67,9 @@ public class SceneManager : GameObject
     }
     Dictionary<SceneType, Scene> scenesDictionary = new Dictionary<SceneType, Scene>();
 
+
+
+    
     public Scene CurrentLevel { get; private set; } = null;
 
     private  Controller controller;
@@ -81,8 +85,7 @@ public class SceneManager : GameObject
 
         CreateGallery();
         //LoadLevels();
-        OpenScene(SceneType.Scene5);
-        
+        OpenScene(SceneType.MainMenu);
     }
 
 
@@ -179,6 +182,15 @@ public class SceneManager : GameObject
 
         if (scenesDictionary.ContainsKey(sceneType))
         {
+            if (sceneType != SceneType.MainMenu && sceneType != SceneType.Gallery && sceneType !=SceneType.Scene1){
+                progressScene = scenesDictionary[sceneType];
+            }
+            if (sceneType == SceneType.Scene1 && progressScene != null)
+            {
+                CurrentLevel = progressScene;
+                AddChildAt(CurrentLevel, 0);
+                return;
+            }
             CurrentLevel = scenesDictionary[sceneType];
             AddChildAt(CurrentLevel, 0);
         }
