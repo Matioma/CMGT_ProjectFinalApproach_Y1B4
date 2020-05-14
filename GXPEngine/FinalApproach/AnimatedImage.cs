@@ -154,7 +154,10 @@ class Animation {
     {
         for (int i = 1; i <= numberOfImages; i++)
         {
-            animations.Add(new Sprite(pathStart + i + fileType));
+            var sprite = new Sprite(pathStart + i + fileType);
+            sprite.x += 2;
+            sprite.y += 2;
+            animations.Add(sprite);
         }
     }
 

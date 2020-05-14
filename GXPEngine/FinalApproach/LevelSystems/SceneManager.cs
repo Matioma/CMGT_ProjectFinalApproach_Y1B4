@@ -191,7 +191,7 @@ public class SceneManager : GameObject
                 AddChildAt(CurrentLevel, 0);
                 return;
             }
-            CurrentLevel = scenesDictionary[sceneType];
+            CurrentLevel = scenesDictionary[sceneType];                               
             AddChildAt(CurrentLevel, 0);
         }
         else {
@@ -1133,7 +1133,7 @@ public class SceneManager : GameObject
                         sceneRef.OnSceneOpen = () =>
                         {
                             AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/4 portrait of theo van gogh ");
+                            AudioManager.Instance.AddEnvironementSound("Environment/4 portrait of theo van gogh");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -1241,8 +1241,8 @@ public class SceneManager : GameObject
 
                         sceneRef.OnSceneOpen = () =>
                         {
-                            AudioManager.Instance.StopSounds();
-                            AudioManager.Instance.AddEnvironementSound("Environment/5 stillife of 15 sunflowers");
+                           AudioManager.Instance.StopSounds();
+                           AudioManager.Instance.AddEnvironementSound("Environment/5 stillife of 15 sunflowers");
                             Controller.Instance.SetCursor(CursorType.HAND);
                         };
                     });
@@ -2208,9 +2208,10 @@ public class SceneManager : GameObject
 
             sceneRef.OnSceneOpen = () =>
             {
-                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2");
+                //AudioManager.Instance.StopSounds();
+                //AudioManager.Instance.PlaySound("VoiceoverLines/scene 2"); 
                 Controller.Instance.SetCursor(CursorType.BRUSH);
-                AudioManager.Instance.ReduceVolume(0.1f);
+                AudioManager.Instance.ReduceVolume(0.3f);
             };
         });
     }
@@ -2460,6 +2461,7 @@ public class SceneManager : GameObject
         var button = new Button("art/BackButton.png", 1, 1,
             () => {
                 Instance.OpenLastScene();
+
                 //Instance.OpenScene(SceneType.MainMenu);
             });
         button.SetXY(button.width / 2 - 30, button.height / 2 - 30);
